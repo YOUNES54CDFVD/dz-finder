@@ -96,7 +96,7 @@ const Submit = () => {
     contactNumber: '',
     image: null
   });
-};
+
 
 return (
   <div className="min-h-screen bg-gradient-bg">
