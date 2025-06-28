@@ -94,19 +94,20 @@ localStorage.setItem("ads", JSON.stringify([newAd, ...existingAds]));
 
 toast({
   title: "تم نشر الإعلان بنجاح!",
-  description: "الإعلان أصبح مرئياً للزوار فوراً.",
+  description: "الإعلان أصبح مرئياً للزوار فوراً."
 });
-    // Reset form
-    setFormData({
-      type: 'lost',
-      itemName: '',
-      description: '',
-      location: '',
-      date: '',
-      contactNumber: '',
-      image: null
-    });
-  };
+
+// Reset form
+setFormData({
+  type: 'lost',
+  itemName: '',
+  description: '',
+  location: '',
+  date: '',
+  contactNumber: '',
+  image: null
+});
+
 
   return (
     <div className="min-h-screen bg-gradient-bg">
