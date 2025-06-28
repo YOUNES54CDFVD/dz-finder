@@ -92,7 +92,7 @@ e.preventDefault();
     ad_type: formData.type,
     location: formData.location,
     date: formData.date,
-    contact_number: formData.contactNumber,
+    contactNumber: formData.contactNumber,
     image_url: null,
     status: "pending",
     created_at: new Date().toISOString()
