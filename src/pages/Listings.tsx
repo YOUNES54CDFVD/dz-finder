@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient"; // أو المسار الصحيح عندك
+import { supabase } from "/supabaseClient"; // أو المسار الصحيح عندك
 import { useState } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
