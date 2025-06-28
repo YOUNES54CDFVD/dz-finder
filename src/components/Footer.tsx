@@ -66,7 +66,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2024 L9itha DZ. جميع الحقوق محفوظة.
+            © 2025 L9itha DZ. جميع الحقوق محفوظة.
           </p>
         </div>
       </div>
