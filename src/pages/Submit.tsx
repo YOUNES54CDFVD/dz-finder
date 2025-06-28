@@ -96,8 +96,6 @@ toast({
   title: "تم نشر الإعلان بنجاح!",
   description: "الإعلان أصبح مرئياً للزوار فوراً.",
 });
- });
-
     // Reset form
     setFormData({
       type: 'lost',
