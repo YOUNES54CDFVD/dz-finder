@@ -41,7 +41,7 @@ const Submit = () => {
     }));
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) { // 5MB limit
@@ -59,30 +59,19 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
   };
 
-  const { data, error } = await supabase.from("ads").insert([
-  {
-    title: formData.itemName,
-    description: formData.description,
-    ad_type: formData.type,
-    location: formData.location,
-    date: formData.date,
-    contact_number: formData.contactNumber,
-    image_url: null,
-    status: "pending",
-    created_at: new Date().toISOString()
-  }
-]);
+    const handleSubmit = async (e: React.FormEvent) => {
 
-if (error) {
-  console.log("🔴 Supabase error:", error); // <--- هذا يظهر التفاصيل في Console
-  toast({
-    title: "فشل الإرسال",
-    description: error.message, // هذا يعرض السبب الفعلي للمستخدم
-    variant: "destructive"
-  });
-  return;
-}
-
+ e.preventDefault();Add commentMore actions
+    
+    // Basic validation
+    if (!formData.itemName || !formData.description || !formData.location || !formData.date || !formData.contactNumber) {
+      toast({
+        title: "خطأ في النموذج",
+        description: "يرجى ملء جميع الحقول المطلوبة",
+        variant: "destructive"
+      });
+      return;
+    }
 
     // Phone number validation (simple)
     const phoneRegex = /^(\+213|0)[0-9]{9}$/;
