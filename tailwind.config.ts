@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,7 +19,25 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'cairo': ['Cairo', 'sans-serif'],
+			},
 			colors: {
+				// Algerian flag inspired palette
+				'algeria-green': {
+					50: '#f0f9f4',
+					100: '#dcf2e8',
+					500: '#2E8B57',
+					600: '#266a44',
+					700: '#1f5a3a',
+				},
+				'algeria-red': {
+					50: '#fef2f2',
+					100: '#fee2e2',
+					500: '#ef4444',
+					600: '#dc2626',
+					700: '#b91c1c',
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -84,11 +103,16 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				float: {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 3s ease-in-out infinite'
 			}
 		}
 	},
