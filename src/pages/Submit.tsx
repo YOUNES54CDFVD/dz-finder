@@ -1,5 +1,5 @@
 
-import { supabase } from "@/supabaseClient";
+import { supabase } from "../supabaseClient";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navigation from "../components/Navigation";
