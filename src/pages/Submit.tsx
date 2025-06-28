@@ -61,7 +61,7 @@ const Submit = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
 
- e.preventDefault();Add commentMore actions
+e.preventDefault();
     
     // Basic validation
     if (!formData.itemName || !formData.description || !formData.location || !formData.date || !formData.contactNumber) {
