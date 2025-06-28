@@ -80,9 +80,16 @@ e.preventDefault();
         title: "خطأ في رقم الهاتف",
         description: "يرجى إدخال رقم هاتف صحيح (مثال: +213 555 123 456)",
         variant: "destructive"
-      });
-      return;
-    }
+     });
+  return;
+}
+
+// ✅ تم الحفظ بنجاح
+toast({
+  title: "🎉 تم الإعلان بنجاح!",
+  description: "شكراً لك على نشر إعلانك. سيتم مراجعته قريباً.",
+  variant: "success"
+});
 
     // Here you would normally send the data to a backend
     const { error } = await supabase.from("ads").insert([
