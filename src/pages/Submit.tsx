@@ -99,10 +99,12 @@ e.preventDefault();
   }
 ]);
 
+
 if (error) {
+  console.log("❌ Supabase Error:", error); // هذا يطبع الخطأ الحقيقي
   toast({
     title: "فشل الإرسال",
-    description: "تعذّر حفظ الإعلان. حاول لاحقاً.",
+    description: error.message,
     variant: "destructive"
   });
   return;
