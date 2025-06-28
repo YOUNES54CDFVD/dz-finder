@@ -98,19 +98,20 @@ toast({
 });
 
 // Reset form
-setFormData({
-  type: 'lost',
-  itemName: '',
-  description: '',
-  location: '',
-  date: '',
-  contactNumber: '',
-  image: null
-});
+  setFormData({
+    type: 'lost',
+    itemName: '',
+    description: '',
+    location: '',
+    date: '',
+    contactNumber: '',
+    image: null
+  });
+}; // نهاية دالة handleSubmit
 
+return (
+  <div className="min-h-screen bg-gradient-bg">
 
-  return (
-    <div className="min-h-screen bg-gradient-bg">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8">
