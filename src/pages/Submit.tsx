@@ -81,26 +81,29 @@ const Submit = () => {
       });
       return;
     }
- toast({
-    title: "تم إرسال النموذج!",
-    description: "سيتم مراجعة إعلانك قبل النشر."
-  });
 
-  // Reset form
-  setFormData({
-    type: 'lost',
-    itemName: '',
-    description: '',
-    location: '',
-    date: '',
-    contactNumber: '',
-    image: null
-  });
+    // Here you would normally send the data to a backend
+    console.log('Form submitted:', formData);
+    
+    toast({
+      title: "تم إرسال الإعلان بنجاح!",
+      description: "سيتم مراجعة إعلانك ونشره قريباً",
+    });
 
+    // Reset form
+    setFormData({
+      type: 'lost',
+      itemName: '',
+      description: '',
+      location: '',
+      date: '',
+      contactNumber: '',
+      image: null
+    });
+  };
 
-return (
-  <div className="min-h-screen bg-gradient-bg">
-
+  return (
+    <div className="min-h-screen bg-gradient-bg">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8">
