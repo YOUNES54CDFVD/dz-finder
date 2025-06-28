@@ -1,7 +1,6 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "/supabaseClient"; // أو المسار الصحيح عندك
-import { useState } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,7 @@ const Listings = () => {
   const [filterType, setFilterType] = useState("all");
   const [filterLocation, setFilterLocation] = useState("all");
 
- const [allListings, setAllListings] = useState([]);
+const [allListings, setAllListings] = useState([]);
 
 useEffect(() => {
   const fetchAds = async () => {
@@ -26,6 +25,7 @@ useEffect(() => {
     if (error) {
       console.error("❌ Fetch error:", error.message);
     } else {
+      console.log("📦 بيانات Supabase:", data); // اختياري للتجربة
       setAllListings(data);
     }
   };
@@ -140,7 +140,13 @@ useEffect(() => {
                   <p>📅 {listing.date}</p>
                 </div>
                 <Button 
-                  onClick={() => handleWhatsAppContact(listing.contact, listing.title)}
+                 onClick={() =>
+  handleWhatsAppContact(
+    listing.contact || listing.contactNumber || listing.contact_numberer,
+    listing.title
+  )
+}
+
                   className="w-full bg-green-500 hover:bg-green-600 text-white"
                   size="sm"
                 >
