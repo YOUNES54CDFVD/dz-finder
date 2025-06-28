@@ -1,4 +1,5 @@
 
+import { supabase } from "@/supabaseClient";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navigation from "../components/Navigation";
@@ -58,7 +59,8 @@ const Submit = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     
     // Basic validation
@@ -83,12 +85,28 @@ const Submit = () => {
     }
 
     // Here you would normally send the data to a backend
-    console.log('Form submitted:', formData);
-    
-    toast({
-      title: "تم إرسال الإعلان بنجاح!",
-      description: "سيتم مراجعة إعلانك ونشره قريباً",
-    });
+    const { error } = await supabase.from("ads").insert([
+  {
+    title: formData.itemName,
+    description: formData.description,
+    ad_type: formData.type,
+    location: formData.location,
+    date: formData.date,
+    contact_number: formData.contactNumber,
+    image_url: null,
+    status: "pending",
+    created_at: new Date().toISOString()
+  }
+]);
+
+if (error) {
+  toast({
+    title: "فشل الإرسال",
+    description: "تعذّر حفظ الإعلان. حاول لاحقاً.",
+    variant: "destructive"
+  });
+  return;
+}
 
     // Reset form
     setFormData({
