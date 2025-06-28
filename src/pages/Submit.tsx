@@ -82,13 +82,21 @@ const Submit = () => {
       return;
     }
 
-    // Here you would normally send the data to a backend
-    console.log('Form submitted:', formData);
-    
-    toast({
-      title: "تم إرسال الإعلان بنجاح!",
-      description: "سيتم مراجعة إعلانك ونشره قريباً",
-    });
+// حفظ الإعلان مباشرةً في localStorage
+const newAd = {
+  ...formData,
+  id: Date.now(), // معرف فريد
+  status: "approved", // إعلان منشور مباشرةً
+};
+
+const existingAds = JSON.parse(localStorage.getItem("ads") || "[]");
+localStorage.setItem("ads", JSON.stringify([newAd, ...existingAds]));
+
+toast({
+  title: "تم نشر الإعلان بنجاح!",
+  description: "الإعلان أصبح مرئياً للزوار فوراً.",
+});
+ });
 
     // Reset form
     setFormData({
