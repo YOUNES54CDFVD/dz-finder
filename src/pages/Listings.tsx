@@ -1,4 +1,6 @@
 
+import { useEffect, useState } from "react";
+import { supabase } from "/supabaseClient"; // أو المسار الصحيح عندك
 import { useState } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
@@ -12,67 +14,25 @@ const Listings = () => {
   const [filterType, setFilterType] = useState("all");
   const [filterLocation, setFilterLocation] = useState("all");
 
-  // Sample listings data
-  const allListings = [
-    {
-      id: 1,
-      type: "lost",
-      title: "محفظة جلدية سوداء",
-      description: "محفظة تحتوي على بطاقة هوية وبطاقات مصرفية، ضاعت في منطقة باب الوادي",
-      location: "الجزائر العاصمة",
-      date: "2024-01-15",
-      contact: "+213 555 123 456",
-      image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      id: 2,
-      type: "found",
-      title: "مفاتيح مع ميدالية",
-      description: "مجموعة مفاتيح مع ميدالية صغيرة ذهبية، وُجدت قرب الجامعة",
-      location: "وهران",
-      date: "2024-01-14",
-      contact: "+213 555 987 654",
-      image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      id: 3,
-      type: "lost",
-      title: "هاتف ذكي أزرق",
-      description: "هاتف ذكي لون أزرق مع غطاء شفاف، ضاع في المركز التجاري",
-      location: "قسنطينة",
-      date: "2024-01-13",
-      contact: "+213 555 456 789",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      id: 4,
-      type: "found",
-      title: "حقيبة يد نسائية",
-      description: "حقيبة يد نسائية لون بني، وُجدت في الحديقة العامة",
-      location: "سطيف",
-      date: "2024-01-12",
-      contact: "+213 555 321 654",
-      image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      id: 5,
-      type: "lost",
-      title: "بطاقة هوية",
-      description: "بطاقة هوية وطنية، ضاعت في محطة الحافلات",
-      location: "عنابة",
-      date: "2024-01-11",
-      contact: "+213 555 159 753",
-    },
-    {
-      id: 6,
-      type: "found",
-      title: "ساعة يد رياضية",
-      description: "ساعة يد رياضية لون أسود، وُجدت في الملعب الرياضي",
-      location: "تلمسان",
-      date: "2024-01-10",
-      contact: "+213 555 852 963",
+ const [allListings, setAllListings] = useState([]);
+
+useEffect(() => {
+  const fetchAds = async () => {
+    const { data, error } = await supabase
+      .from("ads")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("❌ Fetch error:", error.message);
+    } else {
+      setAllListings(data);
     }
-  ];
+  };
+
+  fetchAds();
+}, []);
+
 
   // Filter listings based on search and filters
   const filteredListings = allListings.filter(listing => {
