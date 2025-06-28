@@ -81,23 +81,12 @@ const Submit = () => {
       });
       return;
     }
+ toast({
+    title: "تم إرسال النموذج!",
+    description: "سيتم مراجعة إعلانك قبل النشر."
+  });
 
-// حفظ الإعلان مباشرةً في localStorage
-const newAd = {
-  ...formData,
-  id: Date.now(), // معرف فريد
-  status: "approved", // إعلان منشور مباشرةً
-};
-
-const existingAds = JSON.parse(localStorage.getItem("ads") || "[]");
-localStorage.setItem("ads", JSON.stringify([newAd, ...existingAds]));
-
-toast({
-  title: "تم نشر الإعلان بنجاح!",
-  description: "الإعلان أصبح مرئياً للزوار فوراً."
-});
-
-// Reset form
+  // Reset form
   setFormData({
     type: 'lost',
     itemName: '',
@@ -107,7 +96,7 @@ toast({
     contactNumber: '',
     image: null
   });
-}; // نهاية دالة handleSubmit
+};
 
 return (
   <div className="min-h-screen bg-gradient-bg">
