@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import AnimatedLinkButton from "@/components/AnimatedLinkButton"; // ✅ الزر الذكي
 
 const Listings = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +24,10 @@ const Listings = () => {
 
   useEffect(() => {
     const fetchAds = async () => {
-      const { data, error } = await supabase.from("ads").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("ads")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (!error) {
         setAllListings(data);
@@ -54,10 +58,13 @@ const Listings = () => {
 
   const filteredListings = allListings.filter((listing) => {
     const isVisible = listing.status === "published" || listing.status === "pending";
-    const matchesSearch = (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === "all" || listing.ad_type === filterType;
-    const matchesLocation = !filterLocation || (listing.location ?? "").toLowerCase().includes(filterLocation.toLowerCase());
+    const matchesLocation =
+      !filterLocation ||
+      (listing.location ?? "").toLowerCase().includes(filterLocation.toLowerCase());
     return isVisible && matchesSearch && matchesType && matchesLocation;
   });
 
@@ -69,7 +76,7 @@ const Listings = () => {
     window.open(url, "_blank");
   };
 
-  return (
+    return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       <div className="container mx-auto px-4 py-8">
@@ -111,7 +118,7 @@ const Listings = () => {
           </div>
         </div>
 
-                {isLoading ? (
+        {isLoading ? (
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-10 w-10 border-[5px] border-primary border-t-transparent mx-auto mb-4" />
             <p className="text-muted-foreground">جاري تحميل الإعلانات...</p>
@@ -141,13 +148,11 @@ const Listings = () => {
 
                   <CardContent className="p-4 space-y-3">
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          listing.ad_type === "lost"
-                            ? "bg-destructive/20 text-destructive"
-                            : "bg-primary/10 text-primary"
-                        }`}
-                      >
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        listing.ad_type === "lost"
+                          ? "bg-destructive/20 text-destructive"
+                          : "bg-primary/10 text-primary"
+                      }`}>
                         {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                       </span>
 
@@ -190,17 +195,16 @@ const Listings = () => {
                 <p className="text-sm text-muted-foreground mb-6">
                   جرب تغيير معايير البحث أو الفلترة
                 </p>
-                <Button asChild>
-                  <a href="/submit">أضف إعلان جديد</a>
-                </Button>
+
+                {/* ✅ زر ذكي */}
+                <AnimatedLinkButton to="/submit">
+                  أضف إعلان جديد
+                </AnimatedLinkButton>
               </div>
             )}
 
             {slicedListings.length < filteredListings.length && (
-              <div
-                id="load-more-trigger"
-                className="py-12 text-center text-muted-foreground"
-              >
+              <div id="load-more-trigger" className="py-12 text-center text-muted-foreground">
                 تحميل المزيد...
               </div>
             )}
