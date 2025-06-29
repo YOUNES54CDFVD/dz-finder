@@ -44,13 +44,10 @@ const Listings = () => {
   }, []);
 
   const filteredListings = allListings.filter((listing) => {
-    const isVisible =
-      listing.status === "published" || listing.status === "pending";
-
+    const isVisible = listing.status === "pending" || listing.status === "published";
     const matchesSearch =
       (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
-
     const matchesType = filterType === "all" || listing.ad_type === filterType;
     const matchesLocation =
       filterLocation === "all" || listing.location === filterLocation;
@@ -156,7 +153,7 @@ const Listings = () => {
                     {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                   </span>
                   {listing.status === "pending" && (
-                    <span className="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">
+                    <span className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">
                       قيد المراجعة
                     </span>
                   )}
