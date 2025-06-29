@@ -46,11 +46,9 @@ const Listings = () => {
   const filteredListings = allListings.filter((listing) => {
     const matchesSearch =
       (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (listing.description ?? "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+      (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesType = filterType === "all" || listing.type === filterType;
+    const matchesType = filterType === "all" || listing.ad_type === filterType;
     const matchesLocation =
       filterLocation === "all" || listing.location === filterLocation;
 
@@ -76,7 +74,7 @@ const Listings = () => {
           جميع الإعلانات
         </h1>
 
-        {/* 🧠 البحث والفلاتر */}
+        {/* فلاتر البحث */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="md:col-span-2">
@@ -116,14 +114,14 @@ const Listings = () => {
           </div>
         </div>
 
-        {/* 🧾 عدد النتائج */}
+        {/* عدد النتائج */}
         <div className="mb-6">
           <p className="text-gray-600">
             عرض {filteredListings.length} من أصل {allListings.length} إعلان
           </p>
         </div>
 
-        {/* 🪧 شبكة الإعلانات */}
+        {/* شبكة الإعلانات */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredListings.map((listing) => (
             <Card
@@ -131,9 +129,9 @@ const Listings = () => {
               className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
             >
               <CardHeader className="p-0">
-                {listing.image || listing.image_url ? (
+                {listing.image_url ? (
                   <img
-                    src={listing.image || listing.image_url || "/fallback.jpg"}
+                    src={listing.image_url || "/fallback.jpg"}
                     alt={listing.title}
                     className="w-full h-48 object-cover rounded-t-lg"
                   />
@@ -147,12 +145,12 @@ const Listings = () => {
                 <div className="flex items-center gap-2 mb-2">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      listing.type === "lost"
+                      listing.ad_type === "lost"
                         ? "bg-red-100 text-red-700"
                         : "bg-green-100 text-green-700"
                     }`}
                   >
-                    {listing.type === "lost" ? "مفقود" : "موجود"}
+                    {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                   </span>
                 </div>
                 <CardTitle className="text-lg mb-2">{listing.title}</CardTitle>
@@ -161,14 +159,12 @@ const Listings = () => {
                 </CardDescription>
                 <div className="text-sm text-gray-500 mb-4">
                   <p>📍 {listing.location}</p>
-                  <p>📅 {listing.date}</p>
+                  {listing.date && <p>📅 {listing.date}</p>}
                 </div>
                 <Button
                   onClick={() =>
                     handleWhatsAppContact(
-                      listing.contact ||
-                        listing.contactNumber ||
-                        listing.contact_numberer,
+                      listing.contact_numberer || listing.contactNumber,
                       listing.title
                     )
                   }
@@ -182,7 +178,7 @@ const Listings = () => {
           ))}
         </div>
 
-        {/* 🈳 حالة لا توجد نتائج */}
+        {/* لا توجد نتائج */}
         {filteredListings.length === 0 && (
           <div className="text-center py-12">
             <h3 className="text-xl font-semibold text-gray-600 mb-4">
