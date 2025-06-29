@@ -27,8 +27,8 @@ const Listings = () => {
   const [allListings, setAllListings] = useState([]);
   const [uniqueLocations, setUniqueLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(12); // ✅ زيادة عدد البدء
 
+  const [visibleCount, setVisibleCount] = useState(12); // ✅ بداية أكبر
   const pageSize = 6;
 
   useEffect(() => {
@@ -49,6 +49,7 @@ const Listings = () => {
         });
         setUniqueLocations([...locSet].sort());
       }
+
       setIsLoading(false);
     };
 
@@ -60,7 +61,7 @@ const Listings = () => {
           setVisibleCount((prev) => prev + pageSize);
         }
       },
-      { threshold: 0.5 } // ✅ عدّل لتقليل العتبة
+      { threshold: 0.5 } // ✅ أكثر مرونة
     );
 
     const target = document.querySelector("#load-more-trigger");
@@ -99,12 +100,12 @@ const Listings = () => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">جميع الإعلانات</h1>
 
-        {/* فلاتر */}
+        {/* 🔍 الفلاتر */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="md:col-span-2">
               <Input
-                placeholder="ابحث..."
+                placeholder="ابحث عن شيء مفقود أو موجود..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -135,7 +136,7 @@ const Listings = () => {
           </div>
         </div>
 
-        {/* نتائج */}
+        {/* 🧾 النتائج */}
         {isLoading ? (
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-10 w-10 border-[5px] border-green-500 border-t-transparent mx-auto mb-4" />
@@ -143,7 +144,9 @@ const Listings = () => {
           </div>
         ) : (
           <>
-            <p className="text-gray-600 mb-6">عرض {filteredListings.length} من أصل {allListings.length} إعلان</p>
+            <p className="text-gray-600 mb-6">
+              عرض {filteredListings.length} من أصل {allListings.length} إعلان
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {slicedListings.map((listing) => (
                 <Card key={listing.id} className="hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
@@ -169,7 +172,13 @@ const Listings = () => {
                       <p>📍 {listing.location}</p>
                       {listing.date && <p>📅 {listing.date}</p>}
                     </div>
-                    <Button onClick={() => handleWhatsAppContact(listing.contact_numberer || listing.contactNumber || "", listing.title, listing.ad_type)} className="w-full bg-green-500 hover:bg-green-600 text-white" size="sm">
+                    <Button
+                      onClick={() =>
+                        handleWhatsAppContact(listing.contact_numberer || listing.contactNumber || "", listing.title, listing.ad_type)
+                      }
+                      className="w-full bg-green-500 hover:bg-green-600 text-white"
+                      size="sm"
+                    >
                       تواصل عبر واتساب
                     </Button>
                   </CardContent>
@@ -177,7 +186,7 @@ const Listings = () => {
               ))}
             </div>
 
-            {/* لا توجد نتائج */}
+            {/* ⚠️ لا توجد نتائج */}
             {filteredListings.length === 0 && (
               <div className="text-center py-12">
                 <h3 className="text-xl font-semibold text-gray-600 mb-4">لا توجد نتائج</h3>
@@ -186,7 +195,7 @@ const Listings = () => {
               </div>
             )}
 
-            {/* العنصر المسؤول عن التمرير */}
+            {/* 🔁 Scroll Loader */}
             {slicedListings.length < filteredListings.length && (
               <div id="load-more-trigger" className="py-12 text-center text-gray-400">تحميل المزيد...</div>
             )}
