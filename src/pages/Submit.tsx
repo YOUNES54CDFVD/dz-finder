@@ -195,11 +195,21 @@ const Submit = () => {
           )}
 
           {/* ✅ رسالة نجاح */}
-          {showSuccessPopup && (
-            <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-              🎉 تم نشر إعلانك بنجاح!
-            </div>
-          )}
+         {showSuccessPopup && (
+  <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 text-center space-y-2">
+    <p>🎉 تم نشر إعلانك بنجاح!</p>
+    <button
+      onClick={() => {
+        playSuccessSound();
+        setShowSuccessPopup(false);
+      }}
+      className="mt-1 px-4 py-1 bg-white text-green-700 rounded font-semibold hover:bg-gray-100 transition"
+    >
+      حسناً، جميل
+    </button>
+  </div>
+)}
+
         </div>
       </div>
       <Footer />
