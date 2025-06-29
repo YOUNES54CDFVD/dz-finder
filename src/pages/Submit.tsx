@@ -229,7 +229,7 @@ const Submit = () => {
                   <Label>الصورة (اختياري)</Label>
                   <Input type="file" accept="image/*" onChange={handleImageChange} />
                 </div>
-                        <ButtonAdd commentMore actions
+                        <Button commentMore actions
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full bg-primary hover:bg-primary/80 text-primary-foreground py-3 text-lg"
