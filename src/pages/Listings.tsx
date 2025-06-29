@@ -36,6 +36,7 @@ const Listings = () => {
         console.error("❌ Fetch error:", error.message);
       } else {
         console.log("📦 بيانات Supabase:", data);
+        console.log("🧪 أول إعلان:", data?.[0]);
         setAllListings(data);
       }
     };
@@ -43,17 +44,8 @@ const Listings = () => {
     fetchAds();
   }, []);
 
-  const filteredListings = allListings.filter((listing) => {
-    const isVisible = listing.status === "pending" || listing.status === "published";
-    const matchesSearch =
-      (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = filterType === "all" || listing.ad_type === filterType;
-    const matchesLocation =
-      filterLocation === "all" || listing.location === filterLocation;
-
-    return isVisible && matchesSearch && matchesType && matchesLocation;
-  });
+  // مؤقتًا: عرض كل الإعلانات بدون فلترة لتأكيد وصول البيانات
+  const filteredListings = allListings;
 
   const locations = [...new Set(allListings.map((l) => l.location))];
 
@@ -114,77 +106,80 @@ const Listings = () => {
           </div>
         </div>
 
-        {/* عدد النتائج */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            عرض {filteredListings.length} من أصل {allListings.length} إعلان
-          </p>
-        </div>
+        {/* حالة عدم وجود بيانات */}
+        {allListings.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">📭 جاري تحميل الإعلانات أو لا توجد بيانات</p>
+          </div>
+        )}
 
         {/* شبكة الإعلانات */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredListings.map((listing) => (
-            <Card
-              key={listing.id}
-              className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <CardHeader className="p-0">
-                {listing.image_url ? (
-                  <img
-                    src={listing.image_url}
-                    alt={listing.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                ) : (
-                  <div className="w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
-                    <span className="text-gray-500">لا توجد صورة</span>
-                  </div>
-                )}
-              </CardHeader>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      listing.ad_type === "lost"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-green-100 text-green-700"
-                    }`}
-                  >
-                    {listing.ad_type === "lost" ? "مفقود" : "موجود"}
-                  </span>
-                  {listing.status === "pending" && (
-                    <span className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">
-                      قيد المراجعة
-                    </span>
+          {filteredListings.map((listing) => {
+            console.log("🎯 إعلان:", listing);
+            return (
+              <Card
+                key={listing.id}
+                className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <CardHeader className="p-0">
+                  {listing.image_url ? (
+                    <img
+                      src={listing.image_url}
+                      alt={listing.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                      <span className="text-gray-500">لا توجد صورة</span>
+                    </div>
                   )}
-                </div>
-                <CardTitle className="text-lg mb-2">{listing.title}</CardTitle>
-                <CardDescription className="mb-4 leading-relaxed">
-                  {listing.description}
-                </CardDescription>
-                <div className="text-sm text-gray-500 mb-4">
-                  <p>📍 {listing.location}</p>
-                  {listing.date && <p>📅 {listing.date}</p>}
-                </div>
-                <Button
-                  onClick={() =>
-                    handleWhatsAppContact(
-                      listing.contact_numberer || listing.contactNumber || "",
-                      listing.title
-                    )
-                  }
-                  className="w-full bg-green-500 hover:bg-green-600 text-white"
-                  size="sm"
-                >
-                  تواصل عبر واتساب
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        listing.ad_type === "lost"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {listing.ad_type === "lost" ? "مفقود" : "موجود"}
+                    </span>
+                    {listing.status === "pending" && (
+                      <span className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">
+                        قيد المراجعة
+                      </span>
+                    )}
+                  </div>
+                  <CardTitle className="text-lg mb-2">{listing.title}</CardTitle>
+                  <CardDescription className="mb-4 leading-relaxed">
+                    {listing.description}
+                  </CardDescription>
+                  <div className="text-sm text-gray-500 mb-4">
+                    <p>📍 {listing.location}</p>
+                    {listing.date && <p>📅 {listing.date}</p>}
+                  </div>
+                  <Button
+                    onClick={() =>
+                      handleWhatsAppContact(
+                        listing.contact_numberer || listing.contactNumber || "",
+                        listing.title
+                      )
+                    }
+                    className="w-full bg-green-500 hover:bg-green-600 text-white"
+                    size="sm"
+                  >
+                    تواصل عبر واتساب
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* لا توجد نتائج */}
-        {filteredListings.length === 0 && (
+        {filteredListings.length === 0 && allListings.length > 0 && (
           <div className="text-center py-12">
             <h3 className="text-xl font-semibold text-gray-600 mb-4">
               لا توجد نتائج
