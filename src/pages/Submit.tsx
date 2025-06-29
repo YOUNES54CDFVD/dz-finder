@@ -191,7 +191,6 @@ const Submit = () => {
                 <div className="animate-spin h-8 w-8 mx-auto mb-3 border-4 border-green-500 border-t-transparent rounded-full" />
                 <p className="text-gray-700 font-medium">جاري معالجة الإعلان...</p>
               </div>
-                              </div>
             </div>
           )}
 
