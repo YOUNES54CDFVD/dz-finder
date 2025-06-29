@@ -1,3 +1,4 @@
+import AnimatedLinkButton from "@/components/AnimatedLinkButton"; // ✅ الزر الذكي
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -46,23 +47,26 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* ✅ Quick Links */}
+                    {/* ✅ Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">روابط سريعة</h3>
             <ul className="space-y-2">
-              {["الرئيسية", "الإعلانات", "أضف إعلان", "من نحن"].map((label, i) => {
-                const to = ["/", "/listings", "/submit", "/about"][i];
-                return (
-                  <li key={to}>
-                    <Link
-                      to={to}
-                      className="text-muted-foreground hover:text-accent transition-colors"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                );
-              })}
+              {[
+                { label: "الرئيسية", to: "/" },
+                { label: "الإعلانات", to: "/listings" },
+                { label: "أضف إعلان", to: "/submit" },
+                { label: "من نحن", to: "/about" },
+              ].map(({ label, to }) => (
+                <li key={to}>
+                  <AnimatedLinkButton
+                    to={to}
+                    variant="link"
+                    className="text-muted-foreground hover:text-accent p-0 h-auto text-base"
+                  >
+                    {label}
+                  </AnimatedLinkButton>
+                </li>
+              ))}
             </ul>
           </div>
 
