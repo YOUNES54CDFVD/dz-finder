@@ -2,19 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🌤️ الوضع الفاتح */
 :root {
   --background: #f8fafc;
   --foreground: #1e1e1e;
+
   --primary: #1f5a3a;
   --primary-foreground: #ffffff;
-  --accent: #facc15;
+
+  --accent: #c7d2fe; /* ← لون هادئ بديل عن الأصفر */
   --accent-foreground: #1e1e1e;
 
   --border: #e2e8f0;
   --card: #ffffff;
   --card-foreground: #1e1e1e;
+
   --popover: #ffffff;
   --popover-foreground: #1e1e1e;
+
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
 
@@ -22,12 +27,44 @@
   --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #16a34a;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #facc15;
+  --sidebar-accent: #c7d2fe;
   --sidebar-accent-foreground: #1f1f1f;
   --sidebar-border: #334155;
   --sidebar-ring: #10b981;
 }
 
+/* 🌙 الوضع الداكن */
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+
+  --primary: #22c55e;
+  --primary-foreground: #0f172a;
+
+  --accent: #6366f1; /* بنفسجي أنيق */
+  --accent-foreground: #ffffff;
+
+  --border: #1e293b;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+
+  --muted: #334155;
+  --muted-foreground: #cbd5e1;
+
+  --sidebar-background: #0f172a;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #0f172a;
+  --sidebar-accent: #6366f1;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #22d3ee;
+}
+
+/* ✅ التطبيق الأساسي */
 body {
   @apply bg-background text-foreground font-cairo;
 }
