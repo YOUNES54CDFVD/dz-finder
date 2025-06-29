@@ -15,7 +15,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import AnimatedLinkButton from "@/components/AnimatedLinkButton"; // ✅ الزر الذكي
+import AnimatedLinkButton from "@/components/AnimatedLinkButton";
 
 const Submit = () => {
   const [searchParams] = useSearchParams();
@@ -168,10 +168,13 @@ const Submit = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-               <div className="space-y-2">Add commentMore actions
+                {/* النوع */}
+                <div className="space-y-2">
                   <Label>نوع الإعلان</Label>
                   <Select value={formData.type} onValueChange={(v) => handleInputChange("type", v)}>
-                    <SelectTrigger><SelectValue placeholder="نوع الإعلان" /></SelectTrigger>Add commentMore actions
+                    <SelectTrigger>
+                      <SelectValue placeholder="نوع الإعلان" />
+                    </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="lost">مفقود</SelectItem>
                       <SelectItem value="found">موجود</SelectItem>
@@ -179,11 +182,13 @@ const Submit = () => {
                   </Select>
                 </div>
 
+                {/* الاسم */}
                 <div className="space-y-2">
                   <Label>اسم الشيء</Label>
                   <Input value={formData.itemName} onChange={(e) => handleInputChange("itemName", e.target.value)} />
                 </div>
 
+                {/* الوصف */}
                 <div className="space-y-2">
                   <Label>الوصف</Label>
                   <Textarea
@@ -193,20 +198,22 @@ const Submit = () => {
                   />
                 </div>
 
+                {/* الولاية */}
                 <div className="space-y-2">
                   <Label>الموقع (الولاية)</Label>
                   <Select value={formData.location} onValueChange={(v) => handleInputChange("location", v)}>
-                    <SelectTrigger><SelectValue placeholder="اختر الولاية" /></SelectTrigger>
+                    <SelectTrigger>
+                      <SelectValue placeholder="اختر الولاية" />
+                    </SelectTrigger>
                     <SelectContent>
                       {wilayas.map((w) => (
-                        <SelectItem key={w} value={w}>
-                          {w}
-                        </SelectItem>
+                        <SelectItem key={w} value={w}>{w}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
+                {/* التاريخ */}
                 <div className="space-y-2">
                   <Label>التاريخ</Label>
                   <Input
@@ -216,6 +223,7 @@ const Submit = () => {
                   />
                 </div>
 
+                {/* الهاتف */}
                 <div className="space-y-2">
                   <Label>رقم الهاتف</Label>
                   <Input
@@ -225,11 +233,14 @@ const Submit = () => {
                   />
                 </div>
 
+                {/* الصورة */}
                 <div className="space-y-2">
                   <Label>الصورة (اختياري)</Label>
                   <Input type="file" accept="image/*" onChange={handleImageChange} />
                 </div>
-                        <Button commentMore actions
+
+                {/* زر الإرسال */}
+                <Button
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full bg-primary hover:bg-primary/80 text-primary-foreground py-3 text-lg"
@@ -240,23 +251,41 @@ const Submit = () => {
             </CardContent>
           </Card>
 
-          {/* ✅ لودينغ */}
+          {/* لودينغ أثناء الإرسال */}
           {isSubmitting && (
             <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
               <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg text-center">
                 <div className="animate-spin h-8 w-8 mx-auto mb-3 border-4 border-accent border-t-transparent rounded-full" />
                 <p className="font-medium">جاري معالجة الإعلان...</p>
-              </div>More actions
+              </div>
             </div>
           )}
 
-          {/* ✅ رسالة نجاح */}
-          {/* ✅ رسالة نجاح + زر ذكي للتنقل */}
+          {/* رسالة نجاح بعد النشر */}
           {showSuccessPopup && (
-       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-4 rounded-lg shadow-lg z-50 text-center space-y-2"> <p>🎉 تم نشر إعلانك بنجاح!</p> <button onClick={() => { playSuccessSound(); setShowSuccessPopup(false); }} className="mt-1 px-4 py-1 bg-white text-primary font-semibold rounded hover:bg-muted transition" > حسناً، جميل </button> </div> )}Add commentMore actions
+            <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-4 rounded-lg shadow-lg z-50 text-center space-y-3">
+              <p>🎉 تم نشر إعلانك بنجاح!</p>
+              <div className="flex justify-center gap-3">
+                <AnimatedLinkButton to="/listings" variant="secondary" size="sm">
+                  مشاهدة الإعلانات
+                </AnimatedLinkButton>
+                <button
+                  onClick={() => {
+                    playSuccessSound();
+                    setShowSuccessPopup(false);
+                  }}
+                  className="px-4 py-1 bg-white text-primary font-semibold rounded hover:bg-muted transition"
+                >
+                  حسناً، جميل
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
 
-</div> </div>
-
-<Footer /> </div> ); };
 export default Submit;
-
