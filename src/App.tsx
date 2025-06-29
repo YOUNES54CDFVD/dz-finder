@@ -5,7 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// 📄 صفحاتك الرئيسية
+// 📄 صفحات رئيسية
+import Landing from "./pages/Landing"; // ✅ الصفحة الجديدة
 import Index from "./pages/Index";
 import Listings from "./pages/Listings";
 import Submit from "./pages/Submit";
@@ -14,10 +15,10 @@ import Contact from "./pages/Contact";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
 
-// 💬 مكوّنات عامة
+// 💬 مكونات عامة
 import WhatsAppFloat from "./components/WhatsAppFloat";
 
-// 🚀 مسارات التحويل البصري
+// 🚀 تحويلات مرئية
 import FancyRedirect from "./components/FancyRedirect";
 
 const queryClient = new QueryClient();
@@ -29,8 +30,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* 🔹 الروابط الأصلية */}
-          <Route path="/" element={<Index />} />
+          {/* ✅ صفحة البداية الرسمية */}
+          <Route path="/" element={<Landing />} />
+
+          {/* 🔹 الروابط الفعلية للمحتوى */}
+          <Route path="/home" element={<Index />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/submit" element={<Submit />} />
           <Route path="/about" element={<About />} />
@@ -38,14 +42,16 @@ const App = () => (
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />
 
-          {/* 🔸 روابط التوجيه بـ Fade + Loading */}
-          <Route path="/go-to-home" element={<FancyRedirect to="/" />} />
+          {/* 🔸 تحويلات مرئية سلسة */}
+          <Route path="/go-to-home" element={<FancyRedirect to="/home" />} />
           <Route path="/go-to-listings" element={<FancyRedirect to="/listings" />} />
           <Route path="/go-to-submit" element={<FancyRedirect to="/submit" />} />
           <Route path="/go-to-about" element={<FancyRedirect to="/about" />} />
           <Route path="/go-to-contact" element={<FancyRedirect to="/contact" />} />
           <Route path="/go-to-testimonials" element={<FancyRedirect to="/testimonials" />} />
         </Routes>
+
+        {/* 💬 زر واتساب العائم */}
         <WhatsAppFloat />
       </BrowserRouter>
     </TooltipProvider>
