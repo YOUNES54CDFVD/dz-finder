@@ -44,6 +44,9 @@ const Listings = () => {
   }, []);
 
   const filteredListings = allListings.filter((listing) => {
+    const isVisible =
+      listing.status === "published" || listing.status === "pending";
+
     const matchesSearch =
       (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
@@ -52,7 +55,7 @@ const Listings = () => {
     const matchesLocation =
       filterLocation === "all" || listing.location === filterLocation;
 
-    return matchesSearch && matchesType && matchesLocation;
+    return isVisible && matchesSearch && matchesType && matchesLocation;
   });
 
   const locations = [...new Set(allListings.map((l) => l.location))];
@@ -65,7 +68,7 @@ const Listings = () => {
     window.open(whatsappUrl, "_blank");
   };
 
-  return (
+    return (
     <div className="min-h-screen bg-gradient-bg">
       <Navigation />
 
@@ -131,7 +134,7 @@ const Listings = () => {
               <CardHeader className="p-0">
                 {listing.image_url ? (
                   <img
-                    src={listing.image_url || "/fallback.jpg"}
+                    src={listing.image_url}
                     alt={listing.title}
                     className="w-full h-48 object-cover rounded-t-lg"
                   />
@@ -152,6 +155,11 @@ const Listings = () => {
                   >
                     {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                   </span>
+                  {listing.status === "pending" && (
+                    <span className="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">
+                      قيد المراجعة
+                    </span>
+                  )}
                 </div>
                 <CardTitle className="text-lg mb-2">{listing.title}</CardTitle>
                 <CardDescription className="mb-4 leading-relaxed">
@@ -164,7 +172,7 @@ const Listings = () => {
                 <Button
                   onClick={() =>
                     handleWhatsAppContact(
-                      listing.contact_numberer || listing.contactNumber,
+                      listing.contact_numberer || listing.contactNumber || "",
                       listing.title
                     )
                   }
