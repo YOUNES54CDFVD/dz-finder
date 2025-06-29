@@ -22,9 +22,14 @@ import {
 const Listings = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
-  const [filterLocation, setFilterLocation] = useState("all");
+  const [filterLocation, setFilterLocation] = useState("");
   const [allListings, setAllListings] = useState([]);
+  const [uniqueLocations, setUniqueLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Infinite scroll settings
+  const [visibleCount, setVisibleCount] = useState(9);
+  const pageSize = 6;
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -36,14 +41,35 @@ const Listings = () => {
       if (error) {
         console.error("❌ Fetch error:", error.message);
       } else {
-        console.log("📦 بيانات Supabase:", data);
-        console.log("🧪 أول إعلان:", data?.[0]);
         setAllListings(data);
+
+        const locSet = new Set();
+        data.forEach((item) => {
+          const loc = (item.location ?? "").trim();
+          if (loc) locSet.add(loc);
+        });
+
+        setUniqueLocations([...locSet].sort());
       }
+
       setIsLoading(false);
     };
 
     fetchAds();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => prev + pageSize);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const target = document.querySelector("#load-more-trigger");
+    if (target) observer.observe(target);
+
+    return () => observer.disconnect();
   }, []);
 
   const filteredListings = allListings.filter((listing) => {
@@ -51,24 +77,23 @@ const Listings = () => {
       listing.status === "published" || listing.status === "pending";
     const matchesSearch =
       (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (listing.description ?? "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+      (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = filterType === "all" || listing.ad_type === filterType;
     const matchesLocation =
-      filterLocation === "all" || listing.location === filterLocation;
+      !filterLocation ||
+      (listing.location ?? "")
+        .toLowerCase()
+        .includes(filterLocation.toLowerCase());
 
     return isVisible && matchesSearch && matchesType && matchesLocation;
   });
 
-  const locations = [...new Set(allListings.map((l) => l.location))];
+  const slicedListings = filteredListings.slice(0, visibleCount);
 
-  const handleWhatsAppContact = (phoneNumber: string, itemTitle: string, type: string) => {
+  const handleWhatsAppContact = (phoneNumber, itemTitle, type) => {
     const message = `مرحبًا، رأيت إعلان "${itemTitle}" (${type === "lost" ? "مفقود" : "موجود"}) على منصة L9itha DZ وأرغب بالتواصل.`;
-    const whatsappUrl = `https://wa.me/${phoneNumber
-      ?.replace(/\s+/g, "")
-      .replace("+", "")}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
+    const url = `https://wa.me/${phoneNumber?.replace(/\s+/g, "").replace("+", "")}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
   };
 
     return (
@@ -103,19 +128,17 @@ const Listings = () => {
               </Select>
             </div>
             <div>
-              <Select value={filterLocation} onValueChange={setFilterLocation}>
-                <SelectTrigger>
-                  <SelectValue placeholder="الموقع" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">جميع المواقع</SelectItem>
-                  {locations.map((location) => (
-                    <SelectItem key={location} value={location}>
-                      {location}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                list="locations"
+                placeholder="اكتب اسم الولاية"
+                value={filterLocation}
+                onChange={(e) => setFilterLocation(e.target.value)}
+              />
+              <datalist id="locations">
+                {uniqueLocations.map((loc) => (
+                  <option key={loc} value={loc} />
+                ))}
+              </datalist>
             </div>
           </div>
         </div>
@@ -140,70 +163,67 @@ const Listings = () => {
         {/* شبكة الإعلانات */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {!isLoading &&
-            filteredListings.map((listing) => {
-              console.log("🎯 إعلان:", listing);
-              return (
-                <Card
-                  key={listing.id}
-                  className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <CardHeader className="p-0">
-                    {listing.image_url ? (
-                      <img
-                        src={listing.image_url}
-                        alt={listing.title}
-                        className="w-full h-48 object-cover rounded-t-lg"
-                      />
-                    ) : (
-                      <div className="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-                        🖼️ لا توجد صورة
-                      </div>
-                    )}
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          listing.ad_type === "lost"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {listing.ad_type === "lost" ? "مفقود" : "موجود"}
-                      </span>
-                      {listing.status === "pending" && (
-                        <span className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">
-                          قيد المراجعة
-                        </span>
-                      )}
+            slicedListings.map((listing) => (
+              <Card
+                key={listing.id}
+                className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <CardHeader className="p-0">
+                  {listing.image_url ? (
+                    <img
+                      src={listing.image_url}
+                      alt={listing.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                      🖼️ لا توجد صورة
                     </div>
-                    <CardTitle className="text-lg mb-2">
-                      {listing.title}
-                    </CardTitle>
-                    <CardDescription className="mb-4 leading-relaxed">
-                      {listing.description}
-                    </CardDescription>
-                    <div className="text-sm text-gray-500 mb-4">
-                      <p>📍 {listing.location}</p>
-                      {listing.date && <p>📅 {listing.date}</p>}
-                    </div>
-                    <Button
-                      onClick={() =>
-                        handleWhatsAppContact(
-                          listing.contact_numberer || listing.contactNumber || "",
-                          listing.title,
-                          listing.ad_type
-                        )
-                      }
-                      className="w-full bg-green-500 hover:bg-green-600 text-white"
-                      size="sm"
+                  )}
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        listing.ad_type === "lost"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
                     >
-                      تواصل عبر واتساب
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                      {listing.ad_type === "lost" ? "مفقود" : "موجود"}
+                    </span>
+                    {listing.status === "pending" && (
+                      <span className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full">
+                        قيد المراجعة
+                      </span>
+                    )}
+                  </div>
+                  <CardTitle className="text-lg mb-2">
+                    {listing.title}
+                  </CardTitle>
+                  <CardDescription className="mb-4 leading-relaxed">
+                    {listing.description}
+                  </CardDescription>
+                  <div className="text-sm text-gray-500 mb-4">
+                    <p>📍 {listing.location}</p>
+                    {listing.date && <p>📅 {listing.date}</p>}
+                  </div>
+                  <Button
+                    onClick={() =>
+                      handleWhatsAppContact(
+                        listing.contact_numberer || listing.contactNumber || "",
+                        listing.title,
+                        listing.ad_type
+                      )
+                    }
+                    className="w-full bg-green-500 hover:bg-green-600 text-white"
+                    size="sm"
+                  >
+                    تواصل عبر واتساب
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
         </div>
 
         {/* لا توجد نتائج */}
@@ -218,6 +238,13 @@ const Listings = () => {
             <Button asChild>
               <a href="/submit">أضف إعلان جديد</a>
             </Button>
+          </div>
+        )}
+
+        {/* العنصر الذي يفعّل التمرير اللانهائي */}
+        {!isLoading && slicedListings.length < filteredListings.length && (
+          <div id="load-more-trigger" className="py-12 text-center text-gray-400">
+            تحميل المزيد...
           </div>
         )}
       </div>
