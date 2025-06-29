@@ -1,4 +1,5 @@
 
+import AnimatedLinkButton from "@/components/AnimatedLinkButton"; // ✅ أضفه في أعلى الملف
 import { useState } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
@@ -214,23 +215,25 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              {/* FAQ Link */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <span className="text-2xl">❓</span>
-                    الأسئلة الشائعة
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    ربما تجد إجابة سؤالك في قسم الأسئلة الشائعة
-                  </p>
-                  <Button variant="outline" asChild>
-                    <a href="/about">اقرأ المزيد عن المنصة</a>
-                  </Button>
-                </CardContent>
-              </Card>
+            {/* FAQ Link */}
+<Card>
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <span className="text-2xl">❓</span>
+      الأسئلة الشائعة
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-gray-600 mb-4">
+      ربما تجد إجابة سؤالك في قسم الأسئلة الشائعة
+    </p>
+    {/* ✅ زر التحويل الذكي */}
+    <AnimatedLinkButton to="/about" variant="outline">
+      اقرأ المزيد عن المنصة
+    </AnimatedLinkButton>
+  </CardContent>
+</Card>
+
             </div>
           </div>
         </div>
