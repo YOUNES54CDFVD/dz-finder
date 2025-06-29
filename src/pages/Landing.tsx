@@ -1,25 +1,26 @@
 import { Link } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 
-// لا حاجة لـ BlobBackground هنا لأن الصورة صارت الخلفية الكاملة
-
 const Landing = () => {
   return (
     <div
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
+      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-end items-center"
       style={{
-        backgroundImage: 'url("/1.png")',
+        backgroundImage: 'url("/1.png")', // تأكد أن الصورة داخل مجلد public
       }}
     >
-      {/* طبقة تعتيم خفيفة (اختياري لتمييز الزر) */}
+      {/* طبقة شفافية خفيفة أعلى الخلفية */}
       <div className="absolute inset-0 bg-black/30 z-0" />
 
-      <div className="relative z-10 text-center">
+      {/* الزر */}
+      <div className="relative z-10 mb-20">
         <ScrollReveal direction="up">
           <Link to="/home">
-            <button className="px-8 py-3 rounded-full text-white font-medium text-lg bg-algeria-green-500 hover:bg-algeria-green-600 transition-all shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-400/50 group relative overflow-hidden">
+            <button className="relative px-8 py-3 rounded-full text-white font-medium text-lg bg-algeria-green-500 hover:bg-algeria-green-600 transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-green-300 group overflow-hidden">
               <span className="relative z-10">دخول المنصة</span>
-              <span className="absolute inset-0 bg-white opacity-10 group-hover:opacity-20 transition duration-300" />
+
+              {/* تأثير glow عند hover */}
+              <span className="absolute inset-0 bg-green-300 opacity-0 group-hover:opacity-10 blur-xl transition duration-500 pointer-events-none" />
             </button>
           </Link>
         </ScrollReveal>
