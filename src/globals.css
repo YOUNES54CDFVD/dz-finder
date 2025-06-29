@@ -1,1 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+:root {
+  --background: #f8fafc;
+  --foreground: #1e1e1e;
+  --primary: #1f5a3a;
+  --primary-foreground: #ffffff;
+  --accent: #facc15;
+  --accent-foreground: #1e1e1e;
+
+  --border: #e2e8f0;
+  --card: #ffffff;
+  --card-foreground: #1e1e1e;
+  --popover: #ffffff;
+  --popover-foreground: #1e1e1e;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --sidebar-background: #1f2937;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #16a34a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #facc15;
+  --sidebar-accent-foreground: #1f1f1f;
+  --sidebar-border: #334155;
+  --sidebar-ring: #10b981;
+}
+
+body {
+  @apply bg-background text-foreground font-cairo;
+}
