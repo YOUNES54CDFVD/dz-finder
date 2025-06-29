@@ -51,7 +51,7 @@ const Submit = () => {
   };
 
   const playSuccessSound = () => {
-    const audio = new Audio("/sounds/success.mp3");
+    const audio = new Audio("/sounds/successed.mp3");
     audio.play().catch(() => {});
   };
 
