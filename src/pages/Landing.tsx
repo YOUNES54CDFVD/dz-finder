@@ -12,7 +12,7 @@ const Landing = () => {
           {/* 🇩🇿 شعار الجزائر المتوهج */}
           <div className="mx-auto w-44 h-44 mb-6">
             <img
-              src="/algeria-glow-logo.svg"
+              src="/1.png"
               alt="شعار الجزائر"
               className="w-full h-full animate-pulse drop-shadow-lg"
             />
