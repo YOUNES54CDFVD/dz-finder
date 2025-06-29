@@ -7,12 +7,11 @@ const FancyRedirect = ({ to }: { to: string }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setStage("loading"), 700); // 💨 fade-out لمدة 0.7s
-    const navTimer = setTimeout(() => navigate(to), 3700); // 3 ثواني تحميل
-
+    const timer1 = setTimeout(() => setStage("loading"), 700); // 💨 fade-out
+    const timer2 = setTimeout(() => navigate(to), 3700);        // ⏳ loading + redirect
     return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(navTimer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
     };
   }, [navigate, to]);
 
