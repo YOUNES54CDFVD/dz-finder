@@ -20,7 +20,7 @@ const Testimonials = () => {
       const { data, error } = await supabase
         .from("testimonials")
         .select("*")
-        .eq("status", "published")
+        .in("status", ["pending", "published"])
         .order("created_at", { ascending: false });
 
       if (!error && data) {
