@@ -5,7 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-bg">
+    <div
+  className="min-h-screen bg-cover bg-center bg-no-repeat"
+  style={{
+    backgroundImage: 'url("/0.png")',
+    backgroundColor: 'hsl(var(--background))',
+  }}
+>
+
       <Navigation />
       
       <div className="container mx-auto px-4 py-8">
