@@ -4,21 +4,13 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  Card, CardContent, CardDescription, CardHeader, CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import AnimatedLinkButton from "@/components/AnimatedLinkButton"; // ✅ الزر الذكي
+import AnimatedLinkButton from "@/components/AnimatedLinkButton";
 
 const Listings = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,7 +19,7 @@ const Listings = () => {
   const [allListings, setAllListings] = useState([]);
   const [uniqueLocations, setUniqueLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visiblePage, setVisiblePage] = useState(1); // ✅ بدل visibleCount
   const adsPerPage = 12;
 
   useEffect(() => {
@@ -55,33 +47,23 @@ const Listings = () => {
   }, []);
 
   const filteredListings = allListings.filter((listing) => {
-    const isVisible =
-      listing.status === "published" || listing.status === "pending";
+    const isVisible = listing.status === "published" || listing.status === "pending";
     const matchesSearch =
-      (listing.title ?? "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      (listing.description ?? "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-    const matchesType =
-      filterType === "all" || listing.ad_type === filterType;
+      (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = filterType === "all" || listing.ad_type === filterType;
     const matchesLocation =
       !filterLocation ||
-      (listing.location ?? "")
-        .toLowerCase()
-        .includes(filterLocation.toLowerCase());
+      (listing.location ?? "").toLowerCase().includes(filterLocation.toLowerCase());
 
     return isVisible && matchesSearch && matchesType && matchesLocation;
   });
 
-  const slicedListings = filteredListings.slice(0, visibleCount);
+  const slicedListings = filteredListings.slice(0, visiblePage * adsPerPage);
 
     const handleWhatsAppContact = (phoneNumber, itemTitle, type) => {
     const message = `مرحبًا، رأيت إعلان "${itemTitle}" (${type === "lost" ? "مفقود" : "موجود"}) على منصة L9itha DZ وأرغب بالتواصل.`;
-    const url = `https://wa.me/${phoneNumber
-      ?.replace(/\s+/g, "")
-      .replace("+", "")}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${phoneNumber?.replace(/\s+/g, "").replace("+", "")}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
 
@@ -104,9 +86,7 @@ const Listings = () => {
             </div>
             <div>
               <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger>
-                  <SelectValue placeholder="نوع الإعلان" />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="نوع الإعلان" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">جميع الإعلانات</SelectItem>
                   <SelectItem value="lost">مفقود</SelectItem>
@@ -143,10 +123,7 @@ const Listings = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {slicedListings.map((listing) => (
-                <Card
-                  key={listing.id}
-                  className="hover:shadow-md transition border bg-card text-card-foreground"
-                >
+                <Card key={listing.id} className="hover:shadow-md transition border bg-card text-card-foreground">
                   <CardHeader className="p-0">
                     {listing.image_url ? (
                       <img
@@ -163,13 +140,11 @@ const Listings = () => {
 
                   <CardContent className="p-4 space-y-3">
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          listing.ad_type === "lost"
-                            ? "bg-destructive/20 text-destructive"
-                            : "bg-primary/10 text-primary"
-                        }`}
-                      >
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        listing.ad_type === "lost"
+                          ? "bg-destructive/20 text-destructive"
+                          : "bg-primary/10 text-primary"
+                      }`}>
                         {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                       </span>
 
@@ -191,9 +166,7 @@ const Listings = () => {
                     <Button
                       onClick={() =>
                         handleWhatsAppContact(
-                          listing.contact_numberer ||
-                            listing.contactNumber ||
-                            "",
+                          listing.contact_numberer || listing.contactNumber || "",
                           listing.title,
                           listing.ad_type
                         )
@@ -208,6 +181,7 @@ const Listings = () => {
               ))}
             </div>
 
+            {/* 📭 لا توجد نتائج */}
             {filteredListings.length === 0 && (
               <div className="text-center py-12">
                 <h3 className="text-xl font-semibold text-muted-foreground mb-4">
@@ -222,18 +196,28 @@ const Listings = () => {
               </div>
             )}
 
-            {slicedListings.length < filteredListings.length && (
-              <div className="text-center mt-8">
-                <Button
-                  onClick={() =>
-                    setVisibleCount((prev) => prev + adsPerPage)
-                  }
-                  className="bg-algeria-green-600 hover:bg-algeria-green-700 text-white px-6 py-3 rounded-lg"
-                >
-                  التالي
-                </Button>
+            {/* ✅ أزرار التالي والسابق */}
+            {filteredListings.length > adsPerPage && (
+              <div className="flex justify-center items-center gap-4 mt-10">
+                {visiblePage > 1 && (
+                  <Button
+                    onClick={() => setVisiblePage((prev) => prev - 1)}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg"
+                  >
+                    السابق
+                  </Button>
+                )}
+
+                {visiblePage * adsPerPage < filteredListings.length && (
+                  <Button
+                    onClick={() => setVisiblePage((prev) => prev + 1)}
+                    className="bg-algeria-green-600 hover:bg-algeria-green-700 text-white px-6 py-2 rounded-lg"
+                  >
+                    التالي
+                  </Button>
+                )}
               </div>
-            )}
+            )}     
           </>
         )}
       </div>
