@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/supabaseClient";
+import { supabase } from "/supabaseClient";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import FadeInOnScroll from "@/components/FadeInOnScroll";
