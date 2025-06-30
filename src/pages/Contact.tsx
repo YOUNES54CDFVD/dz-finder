@@ -117,7 +117,7 @@ const Contact = () => {
                       للتواصل السريع والدعم الفوري
                     </p>
                     <a
-                      href="https://wa.me/2135263186?text=مرحبا"
+                      href="https://wa.me/213563263186?text=مرحبا"
                       target="_blank"
                       className="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition"
                     >
