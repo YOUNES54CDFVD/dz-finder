@@ -4,27 +4,26 @@
 
 /* 🌞 الوضع الفاتح */
 :root {
-  /* خلفيات ونصوص */
-  --background: #f8fafc;
-  --foreground: #1e1e1e;
-
-  /* الألوان الأساسية */
+  /* 🌈 ألوان أساسية */
   --primary: #1f5a3a;
   --primary-foreground: #ffffff;
-
   --accent: #c7d2fe;
   --accent-foreground: #1e1e1e;
 
-  /* عناصر UI */
-  --border: #e2e8f0;
+  /* 🎨 ألوان الخلفيات والنصوص */
+  --background: #f8fafc;
+  --foreground: #1e1e1e;
+
+  /* 🧱 عناصر الواجهة */
   --card: #ffffff;
   --card-foreground: #1e1e1e;
   --popover: #ffffff;
   --popover-foreground: #1e1e1e;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
+  --border: #e2e8f0;
 
-  /* الشريط الجانبي */
+  /* 🧭 الشريط الجانبي */
   --sidebar-background: #1f2937;
   --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #16a34a;
@@ -37,22 +36,21 @@
 
 /* 🌚 الوضع الداكن */
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-
   --primary: #22c55e;
   --primary-foreground: #0f172a;
-
   --accent: #6366f1;
   --accent-foreground: #ffffff;
 
-  --border: #1e293b;
+  --background: #0f172a;
+  --foreground: #f8fafc;
+
   --card: #1e293b;
   --card-foreground: #f8fafc;
   --popover: #1e293b;
   --popover-foreground: #f8fafc;
   --muted: #334155;
   --muted-foreground: #cbd5e1;
+  --border: #1e293b;
 
   --sidebar-background: #0f172a;
   --sidebar-foreground: #e2e8f0;
@@ -64,7 +62,7 @@
   --sidebar-ring: #22d3ee;
 }
 
-/* ✅ إعدادات الجسم */
+/* 🧾 إعدادات الجسم */
 body {
   @apply bg-background text-foreground font-cairo;
 }
