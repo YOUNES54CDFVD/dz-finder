@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "/supabaseClient";
 import { Button } from "@/components/ui/button";
 
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "******"; // 🔐 غيّرها فورًا ببيئة إنتاج
+const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USER;
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASS;
+
 
 const AdsDashboard = () => {
   const [ads, setAds] = useState([]);
