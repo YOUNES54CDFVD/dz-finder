@@ -177,33 +177,37 @@ const Testimonials = () => {
             </DialogContent>
           </Dialog>
 
-          {/* التقييمات */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-            {testimonials.map((t, i) => (
-              <Card key={i}>
-                <CardHeader>
-                  <CardTitle className="text-algeria-green-600">
-                    {t.name || "مستخدم"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex gap-1">{renderStaticStars(t.rating)}</div>
-                  <blockquote className="italic text-muted-foreground">
-                    "{t.text}"
-                  </blockquote>
-                  {t.status === "pending" && (
-                    <p className="text-sm text-yellow-500">⏳ قيد المراجعة</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+         {/* التقييمات */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+  {testimonials.map((t, i) => (
+    <div
+      key={i}
+      className="border border-gray-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-xl shadow-sm p-6 text-right"
+    >
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="text-algeria-green-600 font-semibold text-base">
+          {t.name || "مستخدم"}
+        </h3>
+        <div className="flex">{renderStaticStars(t.rating)}</div>
       </div>
+      <blockquote className="italic text-muted-foreground leading-relaxed mb-2">
+        "{t.text}"
+      </blockquote>
 
-      <Footer />
+      {/* لو حبيت ترجع عبارة "قيد المراجعة" افك التعليق هنا:
+      {t.status === "pending" && (
+        <p className="text-sm text-yellow-500">⏳ قيد المراجعة</p>
+      )} 
+      */}
     </div>
-  );
+  ))}
+</div>
+      </div>
+    </div>
+
+    <Footer />
+  </div>
+);
 };
 
 export default Testimonials;
