@@ -41,6 +41,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/loading" element={<AwesomeLoader />} />
 
           {/* 🔸 تحويلات مرئية سلسة */}
           <Route path="/go-to-home" element={<FancyRedirect to="/home" />} />
