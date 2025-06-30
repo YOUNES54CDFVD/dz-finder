@@ -1,8 +1,9 @@
-
-import FadeInOnScroll from "@/components/FadeInOnScroll";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/supabaseClient";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
+import FadeInOnScroll from "@/components/FadeInOnScroll";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,37 +14,8 @@ import {
 } from "@/components/ui/card";
 
 const Index = () => {
-  const recentListings = [
-    {
-      id: 1,
-      type: "lost",
-      title: "محفظة جلدية سوداء",
-      description: "محفظة تحتوي على بطاقة هوية وبطاقات أخرى",
-      location: "الجزائر العاصمة",
-      date: "2024-01-15",
-      image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      id: 2,
-      type: "found",
-      title: "مفاتيح مع ميدالية",
-      description: "مجموعة مفاتيح مع ميدالية صغيرة",
-      location: "وهران",
-      date: "2024-01-14",
-      image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      id: 3,
-      type: "lost",
-      title: "هاتف ذكي أزرق",
-      description: "هاتف ذكي لون أزرق مع غطاء شفاف",
-      location: "قسنطينة",
-      date: "2024-01-13",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=300&q=80"
-    }
-  ];
-
-  const testimonials = [
+  const [recentListings, setRecentListings] = useState([]);
+  const [testimonials] = useState([
     {
       name: "أحمد بن محمد",
       rating: 5,
@@ -59,9 +31,26 @@ const Index = () => {
       rating: 5,
       text: "سهولة في الاستخدام وفعالية في النتائج. منصة تستحق الثناء."
     }
-  ];
+  ]);
 
-  return (
+  useEffect(() => {
+    const fetchRecentListings = async () => {
+      const { data, error } = await supabase
+        .from("ads")
+        .select("*")
+        .eq("status", "published")
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      if (!error && data) {
+        setRecentListings(data);
+      }
+    };
+
+    fetchRecentListings();
+  }, []);
+
+    return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
@@ -92,22 +81,28 @@ const Index = () => {
             {recentListings.map((listing) => (
               <Card key={listing.id} className="hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="p-0">
-                  <img
-                    src={listing.image}
-                    alt={listing.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
+                  {listing.image_url ? (
+                    <img
+                      src={listing.image_url}
+                      alt={listing.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-muted flex items-center justify-center text-muted-foreground text-sm">
+                      🖼️ لا توجد صورة
+                    </div>
+                  )}
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        listing.type === "lost"
+                        listing.ad_type === "lost"
                           ? "bg-destructive/20 text-destructive"
                           : "bg-green-100 text-green-700"
                       }`}
                     >
-                      {listing.type === "lost" ? "مفقود" : "موجود"}
+                      {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                     </span>
                   </div>
                   <CardTitle className="text-lg mb-2">{listing.title}</CardTitle>
@@ -119,6 +114,7 @@ const Index = () => {
               </Card>
             ))}
           </div>
+
           <div className="text-center mt-8">
             <Button asChild variant="outline" size="lg" className="text-primary hover:bg-muted">
               <Link to="/listings">عرض جميع الإعلانات</Link>
@@ -127,7 +123,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+            {/* Testimonials */}
       <section className="py-16 px-4 bg-card text-card-foreground">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-primary">ماذا يقول مستخدمونا</h2>
