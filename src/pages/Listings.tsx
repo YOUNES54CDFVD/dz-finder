@@ -47,7 +47,7 @@ const Listings = () => {
   }, []);
 
   const filteredListings = allListings.filter((listing) => {
-    const isVisible = listing.status === "published" || listing.status === "pending";
+    const isVisible = listing.status === "published";
     const matchesSearch =
       (listing.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       (listing.description ?? "").toLowerCase().includes(searchTerm.toLowerCase());
