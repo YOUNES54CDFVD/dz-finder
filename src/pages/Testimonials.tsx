@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import { supabase } from "@/supabaseClient";
+import { supabase } from "/supabaseClient";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
