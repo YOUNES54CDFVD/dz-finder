@@ -33,22 +33,25 @@ const Index = () => {
     }
   ]);
 
-  useEffect(() => {
-    const fetchRecentListings = async () => {
-      const { data, error } = await supabase
-        .from("ads")
-        .select("*")
-        .eq("status", "published")
-        .order("created_at", { ascending: false })
-        .limit(3);
+useEffect(() => {
+  const fetchRecentListings = async () => {
+    const { data, error } = await supabase
+      .from("ads")
+      .select("*")
+      .in("status", ["published", "pending"])
+      .order("created_at", { ascending: false })
+      .limit(3);
 
-      if (!error && data) {
-        setRecentListings(data);
-      }
-    };
+    if (!error && data) {
+      setRecentListings(data);
+    } else {
+      console.error("🔴 خطأ في جلب البيانات:", error);
+    }
+  };
 
-    fetchRecentListings();
-  }, []);
+  fetchRecentListings();
+}, []);
+
 
     return (
     <div className="min-h-screen bg-background text-foreground">
