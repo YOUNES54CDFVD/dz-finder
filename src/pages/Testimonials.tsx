@@ -15,6 +15,7 @@ const Testimonials = () => {
   const [submitting, setSubmitting] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  // 🟢 تحميل التقييمات من القاعدة
   useEffect(() => {
     const fetchTestimonials = async () => {
       const { data, error } = await supabase
@@ -35,22 +36,27 @@ const Testimonials = () => {
     if (!rating || !comment) return;
     setSubmitting(true);
 
-    const { error } = await supabase.from("testimonials").insert({
+    const { data, error } = await supabase.from("testimonials").insert({
       name: "زائر مجهول",
       rating,
       text: comment,
       status: "pending",
-    });
+    }).select();
+
+    if (!error && data) {
+      // ✅ أضف التقييم الجديد مباشرة في الأعلى
+      setTestimonials((prev) => [data[0], ...prev]);
+    }
 
     setTimeout(() => {
       setSubmitting(false);
       setDialogOpen(false);
       setRating(0);
       setComment("");
-    }, 1800);
+    }, 1500);
   };
 
-  const renderStars = (value) => {
+  const renderStars = (value: number) => {
     return [...Array(5)].map((_, i) => {
       const current = i + 1;
       return (
@@ -73,66 +79,74 @@ const Testimonials = () => {
     });
   };
 
-  return (
-  <div className="min-h-screen bg-gradient-bg">
-    <Navigation />
+    return (
+    <div className="min-h-screen bg-gradient-bg">
+      <Navigation />
 
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">تقييمات المستخدمين</h1>
-        <p className="text-gray-600 mt-2 mb-6">
-          شارك قصتك وساهم في بناء الثقة والمجتمع
-        </p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">تقييمات المستخدمين</h1>
+          <p className="text-gray-600 mt-2 mb-6">
+            شارك قصتك وساهم في بناء الثقة والمجتمع
+          </p>
 
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-algeria-green-600 hover:bg-algeria-green-700 text-white px-6 py-3">
-              ✨ أضف تقييمك
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg text-right">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">أضف تقييمك</h2>
-            <div className="flex justify-center mb-4">{renderStars(rating)}</div>
-            <Textarea
-              placeholder="اكتب تعليقك هنا..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              className="mb-4"
-            />
-            <Button
-              disabled={submitting || !rating || !comment}
-              onClick={handleSubmit}
-              className="w-full bg-algeria-green-600 hover:bg-algeria-green-700 text-white"
-            >
-              {submitting ? (
-                <span className="animate-pulse">جارٍ الإرسال...</span>
-              ) : (
-                "إرسال التقييم"
-              )}
-            </Button>
-          </DialogContent>
-        </Dialog>
+          {/* زر ونافذة إضافة تقييم */}
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-algeria-green-600 hover:bg-algeria-green-700 text-white px-6 py-3">
+                ✨ أضف تقييمك
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg text-right">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">أضف تقييمك</h2>
+              <div className="flex justify-center mb-4">{renderStars(rating)}</div>
+              <Textarea
+                placeholder="اكتب تعليقك هنا..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="mb-4"
+              />
+              <Button
+                disabled={submitting || !rating || !comment}
+                onClick={handleSubmit}
+                className="w-full bg-algeria-green-600 hover:bg-algeria-green-700 text-white"
+              >
+                {submitting ? (
+                  <span className="animate-pulse">جارٍ الإرسال...</span>
+                ) : (
+                  "إرسال التقييم"
+                )}
+              </Button>
+            </DialogContent>
+          </Dialog>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-          {testimonials.map((t, i) => (
-            <Card key={i}>
-              <CardHeader>
-                <CardTitle className="text-algeria-green-600">{t.name || "مستخدم"}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex gap-1">{renderStars(t.rating)}</div>
-                <blockquote className="italic text-muted-foreground">"{t.text}"</blockquote>
-              </CardContent>
-            </Card>
-          ))}
+          {/* التقييمات */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+            {testimonials.map((t, i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <CardTitle className="text-algeria-green-600">
+                    {t.name || "مستخدم"}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex gap-1">{renderStars(t.rating)}</div>
+                  <blockquote className="italic text-muted-foreground">
+                    "{t.text}"
+                  </blockquote>
+                  {t.status === "pending" && (
+                    <p className="text-sm text-yellow-500">⏳ قيد المراجعة</p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
 
-    <Footer />
-  </div>
-);
+      <Footer />
+    </div>
+  );
 };
 
 export default Testimonials;
-  
