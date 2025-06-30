@@ -15,7 +15,7 @@ const Landing = () => {
       {/* الزر */}
       <div className="relative z-10 mb-20">
         <ScrollReveal direction="up">
-          <Link to="/home">
+          <Link to="/loading">
             <button className="relative px-10 py-4 rounded-full text-white text-xl font-semibold bg-gradient-to-br from-green-600 to-emerald-500 shadow-lg transition-all duration-300 ease-in-out group overflow-hidden hover:scale-105">
               <span className="relative z-10">دخول المنصة</span>
 
