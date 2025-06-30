@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
@@ -14,50 +15,41 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import AnimatedLinkButton from "@/components/AnimatedLinkButton";
-import ScrollReveal from "@/components/ScrollReveal"; // ✅ انميشن ديناميكي
-import BlobBackground from "@/components/BlobBackground"; // ✅ خلفية مضيئة
+import ScrollReveal from "@/components/ScrollReveal";
+import BlobBackground from "@/components/BlobBackground";
 
 const Contact = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [sending, setSending] = useState(false);
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSending(true);
 
-    if (!formData.name || !formData.email || !formData.message) {
-      toast({
-        title: "خطأ في النموذج",
-        description: "يرجى ملء جميع الحقول المطلوبة",
-        variant: "destructive",
-      });
-      return;
-    }
+    const form = e.currentTarget;
+    const data = new FormData(form);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({
-        title: "خطأ في البريد الإلكتروني",
-        description: "يرجى إدخال بريد إلكتروني صحيح",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    console.log("Contact form submitted:", formData);
-    toast({
-      title: "تم إرسال الرسالة بنجاح!",
-      description: "سنتواصل معك قريباً",
+    const res = await fetch("https://formspree.io/f/your_form_id", {
+      method: "POST",
+      body: data,
+      headers: { Accept: "application/json" },
     });
 
-    setFormData({ name: "", email: "", message: "" });
+    setSending(false);
+
+    if (res.ok) {
+      toast({
+        title: "✅ تم إرسال الرسالة بنجاح!",
+        description: "سنتواصل معك قريباً",
+      });
+      form.reset();
+    } else {
+      toast({
+        title: "خطأ أثناء الإرسال",
+        description: "يرجى المحاولة مرة أخرى لاحقاً",
+        variant: "destructive",
+      });
+    }
   };
 
     return (
@@ -65,7 +57,7 @@ const Contact = () => {
       <BlobBackground />
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal direction="down">
             <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
@@ -86,35 +78,17 @@ const Contact = () => {
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">الاسم الكامل *</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) =>
-                          handleInputChange("name", e.target.value)
-                        }
-                        required
-                      />
+                      <Input id="name" name="name" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">البريد الإلكتروني *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) =>
-                          handleInputChange("email", e.target.value)
-                        }
-                        required
-                      />
+                      <Input id="email" name="email" type="email" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="message">رسالتك *</Label>
                       <Textarea
                         id="message"
-                        value={formData.message}
-                        onChange={(e) =>
-                          handleInputChange("message", e.target.value)
-                        }
+                        name="message"
                         className="min-h-[120px]"
                         required
                       />
@@ -122,32 +96,30 @@ const Contact = () => {
                     <Button
                       type="submit"
                       className="w-full bg-algeria-green-500 hover:bg-algeria-green-600 text-white"
+                      disabled={sending}
                     >
-                      إرسال الرسالة
+                      {sending ? "جاري الإرسال..." : "إرسال الرسالة"}
                     </Button>
                   </form>
                 </CardContent>
               </Card>
             </ScrollReveal>
 
-            {/* معلومات التواصل */}
+            {/* ✅ قسم معلومات التواصل */}
             <div className="space-y-6">
               <ScrollReveal direction="up" delay={0.1}>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      📱 واتساب
-                    </CardTitle>
+                    <CardTitle>📱 واتساب</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      للتواصل السريع والحصول على الدعم الفوري
+                      للتواصل السريع والدعم الفوري
                     </p>
                     <a
                       href="https://wa.me/213555123456?text=مرحبا"
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors"
+                      className="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition"
                     >
                       تواصل عبر واتساب
                     </a>
@@ -158,17 +130,15 @@ const Contact = () => {
               <ScrollReveal direction="up" delay={0.3}>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      📧 البريد الإلكتروني
-                    </CardTitle>
+                    <CardTitle>📧 البريد الإلكتروني</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      للاستفسارات والدعم التقني
+                      لأي استفسار أو دعم تقني
                     </p>
                     <a
                       href="mailto:info@l9itha-dz.com"
-                      className="text-algeria-green-600 hover:text-algeria-green-700 font-medium"
+                      className="text-algeria-green-600 hover:underline"
                     >
                       info@l9itha-dz.com
                     </a>
@@ -179,15 +149,15 @@ const Contact = () => {
               <ScrollReveal direction="up" delay={0.5}>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      🌐 وسائل التواصل
-                    </CardTitle>
+                    <CardTitle>🌐 وسائل التواصل</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      تابعنا للحصول على التحديثات
+                      تابعنا للبقاء على اطلاع
                     </p>
-                    <div className="flex gap-4">{/* أيقونات السوشيال */}</div>
+                    <div className="flex gap-3">
+                      {/* social icons placeholder */}
+                    </div>
                   </CardContent>
                 </Card>
               </ScrollReveal>
@@ -195,16 +165,14 @@ const Contact = () => {
               <ScrollReveal direction="up" delay={0.7}>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      ❓ الأسئلة الشائعة
-                    </CardTitle>
+                    <CardTitle>❓ الأسئلة الشائعة</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      ربما تجد إجابة سؤالك هنا
+                      قد تجد إجابة سؤالك هنا
                     </p>
                     <AnimatedLinkButton to="/about" variant="outline">
-                      اقرأ المزيد عن المنصة
+                      تعرف على المنصة
                     </AnimatedLinkButton>
                   </CardContent>
                 </Card>
