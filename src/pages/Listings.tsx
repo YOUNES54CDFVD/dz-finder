@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";Add commentMore actions
+import { useEffect, useState } from "react";
 import { supabase } from "/supabaseClient";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
