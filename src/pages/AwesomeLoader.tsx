@@ -19,8 +19,9 @@ const AwesomeLoader = () => {
       {/* 🌐 خطوط دائرة تدور */}
       <div className="absolute w-[120%] h-[120%] rounded-full border border-white/10 animate-spin-slow" />
 
-      {/* 🌀 دائرة تحميل */}
-      <div className="w-16 h-16 border-4 border-green-400 border-t-transparent rounded-full animate-spin-slow z-10 mb-8" />
+     
+      {/* 🌀 دائرة تحميل تدور */}
+      <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-6 z-10" />
 
       {/* ⭐ محتوى مركزي */}
       <div className="z-10 flex flex-col items-center gap-4">
