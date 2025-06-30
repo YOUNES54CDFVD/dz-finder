@@ -33,28 +33,29 @@ const Testimonials = () => {
   }, []);
 
     const handleSubmit = async () => {
-    if (!rating || !comment) return;
-    setSubmitting(true);
+  if (!rating || !comment) return;
+  setSubmitting(true);
 
-    const { data, error } = await supabase.from("testimonials").insert({
-      name: "زائر مجهول",
-      rating,
-      text: comment,
-      status: "pending",
-    }).select();
+  const { data, error } = await supabase.from("testimonials").insert({
+    name: "زائر مجهول",
+    rating,
+    text: comment,
+    status: "pending",
+  }).select();
 
-    if (!error && data) {
-      // ✅ أضف التقييم الجديد مباشرة في الأعلى
-      setTestimonials((prev) => [data[0], ...prev]);
-    }
+  if (!error && data) {
+    // ✅ أضف التقييم الجديد مباشرةً في الأعلى
+    setTestimonials(prev => [data[0], ...prev]);
+  }
 
-    setTimeout(() => {
-      setSubmitting(false);
-      setDialogOpen(false);
-      setRating(0);
-      setComment("");
-    }, 1500);
-  };
+  setTimeout(() => {
+    setSubmitting(false);
+    setDialogOpen(false);
+    setRating(0);
+    setComment("");
+  }, 1500);
+};
+
 
   const renderStars = (value: number) => {
     return [...Array(5)].map((_, i) => {
