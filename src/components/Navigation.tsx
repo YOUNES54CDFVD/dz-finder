@@ -8,7 +8,7 @@ const Navigation = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { path: "/", label: "الرئيسية" },
+    { path: "/home", label: "الرئيسية" },
     { path: "/listings", label: "الإعلانات" },
     { path: "/submit", label: "أضف إعلان" },
     { path: "/about", label: "من نحن" },
