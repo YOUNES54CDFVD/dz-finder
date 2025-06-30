@@ -2,27 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🌤️ الوضع الفاتح */
+/* 🌞 الوضع الفاتح */
 :root {
+  /* خلفيات ونصوص */
   --background: #f8fafc;
   --foreground: #1e1e1e;
 
+  /* الألوان الأساسية */
   --primary: #1f5a3a;
   --primary-foreground: #ffffff;
 
-  --accent: #c7d2fe; /* ← لون هادئ بديل عن الأصفر */
+  --accent: #c7d2fe;
   --accent-foreground: #1e1e1e;
 
+  /* عناصر UI */
   --border: #e2e8f0;
   --card: #ffffff;
   --card-foreground: #1e1e1e;
-
   --popover: #ffffff;
   --popover-foreground: #1e1e1e;
-
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
 
+  /* الشريط الجانبي */
   --sidebar-background: #1f2937;
   --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #16a34a;
@@ -33,7 +35,7 @@
   --sidebar-ring: #10b981;
 }
 
-/* 🌙 الوضع الداكن */
+/* 🌚 الوضع الداكن */
 .dark {
   --background: #0f172a;
   --foreground: #f8fafc;
@@ -41,16 +43,14 @@
   --primary: #22c55e;
   --primary-foreground: #0f172a;
 
-  --accent: #6366f1; /* بنفسجي أنيق */
+  --accent: #6366f1;
   --accent-foreground: #ffffff;
 
   --border: #1e293b;
   --card: #1e293b;
   --card-foreground: #f8fafc;
-
   --popover: #1e293b;
   --popover-foreground: #f8fafc;
-
   --muted: #334155;
   --muted-foreground: #cbd5e1;
 
@@ -64,7 +64,7 @@
   --sidebar-ring: #22d3ee;
 }
 
-/* ✅ التطبيق الأساسي */
+/* ✅ إعدادات الجسم */
 body {
   @apply bg-background text-foreground font-cairo;
 }
