@@ -117,7 +117,7 @@ const Contact = () => {
                       للتواصل السريع والدعم الفوري
                     </p>
                     <a
-                      href="https://wa.me/213555123456?text=مرحبا"
+                      href="https://wa.me/2135263186?text=مرحبا"
                       target="_blank"
                       className="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition"
                     >
@@ -137,10 +137,10 @@ const Contact = () => {
                       لأي استفسار أو دعم تقني
                     </p>
                     <a
-                      href="mailto:info@l9itha-dz.com"
+                      href="mailto:l9itha.dz@gmail.com"
                       className="text-algeria-green-600 hover:underline"
                     >
-                      info@l9itha-dz.com
+                      l9itha.dz@gmail.com
                     </a>
                   </CardContent>
                 </Card>
