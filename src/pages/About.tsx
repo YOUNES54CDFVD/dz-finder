@@ -190,7 +190,7 @@ const About = () => {
                   اتصل بنا
                 </a>
                 <a
-                  href="https://wa.me/213555123456"
+                  href="https://wa.me/213563263186"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-center transition-colors"
