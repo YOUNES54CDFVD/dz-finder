@@ -74,7 +74,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">تواصل معنا</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>واتساب: +2135263186</li>
+              <li>واتساب: +213563263186</li>
               <li>البريد: l9itha.dz@gmail.com </li>
               <li>الجزائر</li>
             </ul>
