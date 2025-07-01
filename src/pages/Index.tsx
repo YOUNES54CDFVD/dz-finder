@@ -55,7 +55,7 @@ const Index = () => {
     const fetchTestimonials = async () => {
       const { data, error } = await supabase
         .from("testimonials")
-        .select("id, name, text, rating, image_url")
+        .select("id, name, text, rating")
         .order("created_at", { ascending: false });
 
       if (!error && data) {
