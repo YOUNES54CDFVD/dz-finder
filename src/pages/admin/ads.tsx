@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { supabase } from "/supabaseClient";
+import { supabase } from "./supabaseClient";
 import { Button } from "@/components/ui/button";
 
-const ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USER;
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASS;
-
+// ✅ استدعاء متغيرات البيئة في Vite
+const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USER;
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASS;
 
 const AdsDashboard = () => {
-  const [ads, setAds] = useState([]);
+  const [ads, setAds] = useState<any[]>([]);
   const [auth, setAuth] = useState(false);
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
@@ -103,10 +103,7 @@ const AdsDashboard = () => {
               >
                 ❌ رفض
               </Button>
-              <Button
-                variant="destructive"
-                onClick={() => deleteAd(ad.id)}
-              >
+              <Button variant="destructive" onClick={() => deleteAd(ad.id)}>
                 🗑 حذف
               </Button>
             </div>
