@@ -53,7 +53,13 @@ const Contact = () => {
   };
 
     return (
-    <div className="relative min-h-screen bg-gradient-bg">
+    <div
+  className="min-h-screen bg-cover bg-center bg-no-repeat"
+  style={{
+    backgroundImage: 'url("/7.png")',
+    backgroundColor: 'hsl(var(--background))',
+  }}
+>
       <BlobBackground />
       <Navigation />
 
