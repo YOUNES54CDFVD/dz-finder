@@ -26,7 +26,7 @@ interface Listing {
 interface Testimonial {
   id: string;
   name: string;
-  comment: string;
+  text: string;
   rating: number;
   image_url?: string;
 }
@@ -55,7 +55,7 @@ const Index = () => {
     const fetchTestimonials = async () => {
       const { data, error } = await supabase
         .from("testimonials")
-        .select("id, name, comment, rating, image_url")
+        .select("id, name, text, rating, image_url")
         .order("created_at", { ascending: false });
 
       if (!error && data) {
