@@ -16,6 +16,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
+import AdsDashboard from "./pages/AdsDashboard"; // أو المسار الصحيح حسب مشروعك
+
 
 // 💬 مكونات عامة
 import WhatsAppFloat from "./components/WhatsAppFloat";
@@ -44,6 +46,8 @@ const App = () => (
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/loading" element={<AwesomeLoader />} />
+          <Route path="/ads" element={<AdsDashboard />} />
+         
 
           {/* 🔸 تحويلات مرئية سلسة */}
           <Route path="/go-to-home" element={<FancyRedirect to="/home" />} />
