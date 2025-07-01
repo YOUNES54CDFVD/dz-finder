@@ -28,7 +28,7 @@ interface Testimonial {
   name: string;
   text: string;
   rating: number;
-  image_url?: string;
+
 }
 
 const Index = () => {
@@ -178,7 +178,7 @@ const Index = () => {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-3 italic">"{testimonial.comment}"</p>
+                 <p className="text-muted-foreground mb-3 italic">"{testimonial.text}"</p>
                   <h4 className="font-semibold text-primary">{testimonial.name}</h4>
                 </CardContent>
               </Card>
