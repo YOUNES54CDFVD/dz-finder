@@ -46,7 +46,7 @@ const App = () => (
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/loading" element={<AwesomeLoader />} />
-          <Route path="/ads" element={<ads />} />
+          <Route path="/ads" element={<AdsDashboard />} />
          
 
           {/* 🔸 تحويلات مرئية سلسة */}
