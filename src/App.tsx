@@ -16,7 +16,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
-import AdsDashboard from "./pages/ads"; // أو المسار الصحيح حسب مشروعك
+import AdsDashboard from "./pages/admin/ads"; // أو المسار الصحيح حسب مشروعك
 
 
 // 💬 مكونات عامة
