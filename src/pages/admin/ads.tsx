@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { Button } from "@/components/ui/button";
 
-// ✅ استدعاء متغيرات البيئة في Vite
+// 👤 بيانات تسجيل الدخول من متغيرات البيئة
 const ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USER;
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASS;
 
@@ -12,30 +12,46 @@ const AdsDashboard = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
 
-const fetchAds = async () => {
-  const { data, error } = await supabase
-    .from("ads")
-    .select("*")
-    .order("created_at", { ascending: false });
+  // 📦 جلب الإعلانات من Supabase
+  const fetchAds = async () => {
+    const { data, error } = await supabase
+      .from("ads")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  console.log("📦 البيانات:", data);
-  console.log("❌ الخطأ:", error?.message);
-};
+    if (error) {
+      console.error("❌ خطأ أثناء جلب الإعلانات:", error.message);
+    } else {
+      setAds(data || []);
+    }
+  };
 
+  // ⏳ تحميل الإعلانات عند الدخول
   useEffect(() => {
     if (auth) fetchAds();
   }, [auth]);
 
+  // ✅ تحديث الحالة (نشر / رفض)
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from("ads").update({ status }).eq("id", id);
-    fetchAds();
+    const { error } = await supabase.from("ads").update({ status }).eq("id", id);
+    if (error) {
+      console.error("❌ فشل في تحديث الحالة:", error.message);
+    } else {
+      fetchAds();
+    }
   };
 
+  // 🗑 حذف الإعلان
   const deleteAd = async (id: string) => {
-    await supabase.from("ads").delete().eq("id", id);
-    fetchAds();
+    const { error } = await supabase.from("ads").delete().eq("id", id);
+    if (error) {
+      console.error("❌ فشل في حذف الإعلان:", error.message);
+    } else {
+      fetchAds();
+    }
   };
 
+  // 🔐 تحقق من بيانات تسجيل الدخول
   const handleLogin = () => {
     if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
       setAuth(true);
@@ -44,6 +60,7 @@ const fetchAds = async () => {
     }
   };
 
+  // 🔒 واجهة تسجيل الدخول
   if (!auth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -74,44 +91,49 @@ const fetchAds = async () => {
     );
   }
 
+  // 📋 لوحة الإعلانات بعد الدخول
   return (
     <div className="max-w-5xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold mb-6 text-right text-algeria-green-800">
         لوحة التحكم – الإعلانات
       </h1>
 
-      <div className="grid grid-cols-1 gap-4">
-        {ads.map((ad) => (
-          <div
-            key={ad.id}
-            className="border rounded-lg p-4 bg-white shadow-sm space-y-2 text-right"
-          >
-            <h2 className="text-lg font-semibold text-algeria-green-700">
-              {ad.title}
-            </h2>
-            <p className="text-gray-600">{ad.description}</p>
-            <p className="text-sm text-muted-foreground">
-              الحالة:{" "}
-              <span className="font-medium text-gray-800">{ad.status}</span>
-            </p>
+      {ads.length === 0 ? (
+        <p className="text-center text-gray-500">لا توجد إعلانات حالياً</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4">
+          {ads.map((ad) => (
+            <div
+              key={ad.id}
+              className="border rounded-lg p-4 bg-white shadow-sm space-y-2 text-right"
+            >
+              <h2 className="text-lg font-semibold text-algeria-green-700">
+                {ad.title}
+              </h2>
+              <p className="text-gray-600">{ad.description}</p>
+              <p className="text-sm text-muted-foreground">
+                الحالة:{" "}
+                <span className="font-medium text-gray-800">{ad.status}</span>
+              </p>
 
-            <div className="flex gap-2 mt-2 flex-wrap">
-              <Button onClick={() => updateStatus(ad.id, "published")}>
-                ✅ نشر
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => updateStatus(ad.id, "rejected")}
-              >
-                ❌ رفض
-              </Button>
-              <Button variant="destructive" onClick={() => deleteAd(ad.id)}>
-                🗑 حذف
-              </Button>
+              <div className="flex gap-2 mt-2 flex-wrap">
+                <Button onClick={() => updateStatus(ad.id, "published")}>
+                  ✅ نشر
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => updateStatus(ad.id, "rejected")}
+                >
+                  ❌ رفض
+                </Button>
+                <Button variant="destructive" onClick={() => deleteAd(ad.id)}>
+                  🗑 حذف
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
