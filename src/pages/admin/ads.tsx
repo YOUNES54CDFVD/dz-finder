@@ -12,13 +12,15 @@ const AdsDashboard = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
 
-  const fetchAds = async () => {
-    const { data, error } = await supabase
-      .from("ads")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error && data) setAds(data);
-  };
+const fetchAds = async () => {
+  const { data, error } = await supabase
+    .from("ads")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  console.log("📦 البيانات:", data);
+  console.log("❌ الخطأ:", error?.message);
+};
 
   useEffect(() => {
     if (auth) fetchAds();
