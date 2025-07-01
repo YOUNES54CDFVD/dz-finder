@@ -261,9 +261,24 @@ const Submit = () => {
 
                 {/* الصورة */}
                 <div className="space-y-2">
-                  <Label>الصورة (اختياري)</Label>
-                  <Input type="file" accept="image/*" onChange={handleImageChange} />
-                </div>
+  <Label>الصورة (اختياري)</Label>
+
+  <label className="inline-block bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded cursor-pointer transition">
+    اختر صورة
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleImageChange}
+      className="hidden"
+    />
+  </label>
+
+  {formData.image && (
+    <p className="text-sm text-muted-foreground mt-1">
+      ✅ تم اختيار: {formData.image.name}
+    </p>
+  )}
+</div>
 
                 <Button
                   type="submit"
