@@ -2,19 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ✅ حركات مخصصة */
+@layer utilities {
+  @keyframes swing {
+    0% {
+      transform: rotate(0deg);
+    }
+    30% {
+      transform: rotate(5deg);
+    }
+    60% {
+      transform: rotate(-4deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-swing {
+    animation: swing 0.8s ease-in-out;
+  }
+
+  @keyframes bounceOnce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-bounce-once {
+    animation: bounceOnce 0.5s ease-out;
+  }
+}
+
 /* 🌞 الوضع الفاتح */
 :root {
-  /* 🌈 ألوان أساسية */
   --primary: #1f5a3a;
   --primary-foreground: #ffffff;
   --accent: #c7d2fe;
   --accent-foreground: #1e1e1e;
 
-  /* 🎨 ألوان الخلفيات والنصوص */
   --background: #f8fafc;
   --foreground: #1e1e1e;
 
-  /* 🧱 عناصر الواجهة */
   --card: #ffffff;
   --card-foreground: #1e1e1e;
   --popover: #ffffff;
@@ -23,7 +56,6 @@
   --muted-foreground: #64748b;
   --border: #e2e8f0;
 
-  /* 🧭 الشريط الجانبي */
   --sidebar-background: #1f2937;
   --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #16a34a;
