@@ -65,7 +65,7 @@ const Submit = () => {
     audio.play().catch(() => {});
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -81,11 +81,16 @@ const Submit = () => {
       return;
     }
 
-    const phoneRegex = /^(\+213|0)[0-9]{9}$/;
-    if (!phoneRegex.test(contactNumber.replace(/\s/g, ""))) {
+    // ✅ تصحيح الرقم: تجاهل الصفر بعد +213
+    const cleaned = contactNumber.replace(/\D/g, "");
+    const correctedNumber = cleaned.startsWith("0") ? cleaned.slice(1) : cleaned;
+    const fullNumber = "+213" + correctedNumber;
+
+    const phoneRegex = /^\+213[5-7][0-9]{8}$/;
+    if (!phoneRegex.test(fullNumber)) {
       toast({
         title: "رقم غير صحيح",
-        description: "مثال: +213 555 123 456",
+        description: "مثال: +213661234567 أو 0661234567",
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -122,7 +127,7 @@ const Submit = () => {
       ad_type: type,
       location,
       date,
-      contact_numberer: contactNumber,
+      contact_numberer: fullNumber,
       image_url: imageUrl,
       status: "pending",
       created_at: new Date().toISOString(),
@@ -159,7 +164,9 @@ const Submit = () => {
       <Navigation />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-center mb-8 text-primary">أضف إعلان جديد</h1>
+          <h1 className="text-3xl font-bold text-center mb-8 text-primary">
+            أضف إعلان جديد
+          </h1>
 
           <Card>
             <CardHeader>
@@ -171,7 +178,10 @@ const Submit = () => {
                 {/* النوع */}
                 <div className="space-y-2">
                   <Label>نوع الإعلان</Label>
-                  <Select value={formData.type} onValueChange={(v) => handleInputChange("type", v)}>
+                  <Select
+                    value={formData.type}
+                    onValueChange={(v) => handleInputChange("type", v)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="نوع الإعلان" />
                     </SelectTrigger>
@@ -185,7 +195,10 @@ const Submit = () => {
                 {/* الاسم */}
                 <div className="space-y-2">
                   <Label>اسم الشيء</Label>
-                  <Input value={formData.itemName} onChange={(e) => handleInputChange("itemName", e.target.value)} />
+                  <Input
+                    value={formData.itemName}
+                    onChange={(e) => handleInputChange("itemName", e.target.value)}
+                  />
                 </div>
 
                 {/* الوصف */}
@@ -201,13 +214,18 @@ const Submit = () => {
                 {/* الولاية */}
                 <div className="space-y-2">
                   <Label>الموقع (الولاية)</Label>
-                  <Select value={formData.location} onValueChange={(v) => handleInputChange("location", v)}>
+                  <Select
+                    value={formData.location}
+                    onValueChange={(v) => handleInputChange("location", v)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="اختر الولاية" />
                     </SelectTrigger>
                     <SelectContent>
                       {wilayas.map((w) => (
-                        <SelectItem key={w} value={w}>{w}</SelectItem>
+                        <SelectItem key={w} value={w}>
+                          {w}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -223,14 +241,22 @@ const Submit = () => {
                   />
                 </div>
 
-                {/* الهاتف */}
+                {/* ✅ الهاتف مع مفتاح ثابت */}
                 <div className="space-y-2">
                   <Label>رقم الهاتف</Label>
-                  <Input
-                    type="tel"
-                    value={formData.contactNumber}
-                    onChange={(e) => handleInputChange("contactNumber", e.target.value)}
-                  />
+                  <div className="flex gap-2 items-center">
+                    <span className="text-sm text-muted-foreground font-medium">+213</span>
+                    <Input
+                      type="tel"
+                      placeholder="661234567"
+                      value={formData.contactNumber}
+                      onChange={(e) => handleInputChange("contactNumber", e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    لا تكتب 0 في بداية الرقم. مثال: 661234567
+                  </p>
                 </div>
 
                 {/* الصورة */}
@@ -239,7 +265,6 @@ const Submit = () => {
                   <Input type="file" accept="image/*" onChange={handleImageChange} />
                 </div>
 
-                {/* زر الإرسال */}
                 <Button
                   type="submit"
                   disabled={isSubmitting}
@@ -251,7 +276,7 @@ const Submit = () => {
             </CardContent>
           </Card>
 
-          {/* لودينغ أثناء الإرسال */}
+          {/* تحميل */}
           {isSubmitting && (
             <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
               <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg text-center">
@@ -261,7 +286,7 @@ const Submit = () => {
             </div>
           )}
 
-          {/* رسالة نجاح بعد النشر */}
+          {/* نجاح */}
           {showSuccessPopup && (
             <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-4 rounded-lg shadow-lg z-50 text-center space-y-3">
               <p>🎉 تم نشر إعلانك بنجاح!</p>
