@@ -1,4 +1,3 @@
-
 import AwesomeLoader from "./pages/AwesomeLoader";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -18,9 +17,9 @@ import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
 import AdsDashboard from "./pages/admin/ads"; // أو المسار الصحيح حسب مشروعك
 
-
 // 💬 مكونات عامة
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import ScrollChain from "./components/ScrollChain"; // ✅ مكون السلسلة المثبت
 
 // 🚀 تحويلات مرئية
 import FancyRedirect from "./components/FancyRedirect";
@@ -33,6 +32,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {/* ✅ السلسلة تظهر في جميع الصفحات */}
+        <ScrollChain />
+
         <Routes>
           {/* ✅ صفحة البداية الرسمية */}
           <Route path="/" element={<Landing />} />
@@ -47,7 +49,6 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
           <Route path="/loading" element={<AwesomeLoader />} />
           <Route path="/ads" element={<AdsDashboard />} />
-         
 
           {/* 🔸 تحويلات مرئية سلسة */}
           <Route path="/go-to-home" element={<FancyRedirect to="/home" />} />
