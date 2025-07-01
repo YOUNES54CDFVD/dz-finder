@@ -1,6 +1,15 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://ugdfrhchklwnbhvkyjdd.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnZGZyaGNoa2x3bmJodmt5amRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMjM3ODMsImV4cCI6MjA2NjY5OTc4M30.Ra5WjCdaRWcW1wYbEcnlYP_bF1a31P_8zWUux-w7jd0'
+// ✅ استدعاء من متغيرات البيئة
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL!
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY!
+const adminKey = import.meta.env.VITE_ADMIN_SECRET || 'YOUNES_SECRET'
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// ✅ إعداد الاتصال مع Supabase + تمرير الهيدر المخصص للمشرف
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  global: {
+    headers: {
+      'x-admin-key': adminKey,
+    },
+  },
+})
