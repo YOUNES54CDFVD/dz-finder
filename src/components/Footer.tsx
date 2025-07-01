@@ -47,7 +47,7 @@ const Footer = () => {
             </div>
           </div>
 
-                    {/* ✅ Quick Links */}
+          {/* ✅ Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">روابط سريعة</h3>
             <ul className="space-y-2">
@@ -74,8 +74,26 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">تواصل معنا</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>واتساب: +213563263186</li>
-              <li>البريد: l9itha.dz@gmail.com </li>
+              <li>
+                واتساب:{" "}
+                <a
+                  href="https://wa.me/213563263186"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  +213563263186
+                </a>
+              </li>
+              <li>
+                البريد:{" "}
+                <a
+                  href="mailto:l9itha.dz@gmail.com"
+                  className="text-blue-600 hover:underline"
+                >
+                  l9itha.dz@gmail.com
+                </a>
+              </li>
               <li>الجزائر</li>
             </ul>
           </div>
