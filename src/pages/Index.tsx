@@ -76,7 +76,7 @@ const Index = () => {
     backgroundImage: 'url("/09.jpg")',
     backgroundColor: 'hsl(var(--background))',
   }} 
-        
+  ></div>
       <Navigation />
 
       {/* Hero Section */}
