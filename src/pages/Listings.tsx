@@ -19,7 +19,7 @@ const Listings = () => {
   const [allListings, setAllListings] = useState([]);
   const [uniqueLocations, setUniqueLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [visiblePage, setVisiblePage] = useState(1); // ✅ بدل visibleCount
+  const [visiblePage, setVisiblePage] = useState(1);
   const adsPerPage = 12;
 
   useEffect(() => {
@@ -61,19 +61,25 @@ const Listings = () => {
 
   const slicedListings = filteredListings.slice(0, visiblePage * adsPerPage);
 
-    const handleWhatsAppContact = (phoneNumber, itemTitle, type) => {
+  const handleWhatsAppContact = (phoneNumber, itemTitle, type) => {
     const message = `مرحبًا، رأيت إعلان "${itemTitle}" (${type === "lost" ? "مفقود" : "موجود"}) على منصة L9itha DZ وأرغب بالتواصل.`;
     const url = `https://wa.me/${phoneNumber?.replace(/\s+/g, "").replace("+", "")}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
 
-  return (
+  const handlePhoneCall = (phoneNumber) => {
+    const clean = phoneNumber?.replace(/\s+/g, "").replace("+", "");
+    window.open(`tel:${clean}`);
+  };
+
+    return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8 text-primary">
           جميع الإعلانات
         </h1>
+
         {/* 🔍 الفلاتر */}
         <div className="bg-card border border-border rounded-lg shadow-sm p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -138,7 +144,7 @@ const Listings = () => {
                     )}
                   </CardHeader>
 
-                  <CardContent className="p-4 space-y-3">
+                                    <CardContent className="p-4 space-y-3">
                     <div className="flex items-center gap-2">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                         listing.ad_type === "lost"
@@ -163,19 +169,33 @@ const Listings = () => {
                       {listing.date && <p>📅 {listing.date}</p>}
                     </div>
 
-                    <Button
-                      onClick={() =>
-                        handleWhatsAppContact(
-                          listing.contact_numberer || listing.contactNumber || "",
-                          listing.title,
-                          listing.ad_type
-                        )
-                      }
-                      className="w-full bg-primary text-white hover:bg-primary/80"
-                      size="sm"
-                    >
-                      تواصل عبر واتساب
-                    </Button>
+                    {/* ✅ زر واتساب وزر اتصال مباشر */}
+                    <div className="grid grid-cols-2 gap-2 pt-2">
+                      <Button
+                        onClick={() =>
+                          handleWhatsAppContact(
+                            listing.contact_numberer || listing.contactNumber || "",
+                            listing.title,
+                            listing.ad_type
+                          )
+                        }
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                        size="sm"
+                      >
+                        واتساب
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          handlePhoneCall(
+                            listing.contact_numberer || listing.contactNumber || ""
+                          )
+                        }
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        size="sm"
+                      >
+                        اتصال
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -217,7 +237,7 @@ const Listings = () => {
                   </Button>
                 )}
               </div>
-            )}     
+            )}
           </>
         )}
       </div>
