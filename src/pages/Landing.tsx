@@ -6,11 +6,11 @@ const Landing = () => {
     <div
       className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-end items-center"
       style={{
-        backgroundImage: 'url("/22.png")', // تأكد أن الصورة داخل مجلد public
+        backgroundImage: 'url("/00.png")', // تأكد أن الصورة داخل مجلد public
       }}
     >
       {/* طبقة شفافية خفيفة أعلى الخلفية (احذفها لو كانت تظلم الصورة) */}
-      <div className="absolute inset-0 bg-black/05 z-0" />
+   
 
       {/* الزر */}
       <div className="relative z-10 mb-20">
