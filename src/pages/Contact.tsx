@@ -54,141 +54,144 @@ const Contact = () => {
 
     return (
     <div
-  className="min-h-screen bg-cover bg-center bg-no-repeat"
-  style={{
-    backgroundImage: 'url("/7.jpg")',
-    backgroundColor: 'hsl(var(--background))',
-  }}
->
+      className="relative min-h-screen bg-fixed bg-cover bg-center bg-no-repeat text-foreground"
+      style={{
+        backgroundImage: 'url("/7.jpg")',
+        backgroundColor: 'hsl(var(--background))',
+      }}
+    >
       <BlobBackground />
-      <Navigation />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-0" />
+      <div className="relative z-10">
+        <Navigation />
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <ScrollReveal direction="down">
-            <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-              اتصل بنا
-            </h1>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <ScrollReveal direction="left">
-              <Card>
-                <CardHeader>
-                  <CardTitle>أرسل لنا رسالة</CardTitle>
-                  <CardDescription>
-                    نحن نقدر آراءكم واقتراحاتكم لتحسين المنصة
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">الاسم الكامل *</Label>
-                      <Input id="name" name="name" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">البريد الإلكتروني *</Label>
-                      <Input id="email" name="email" type="email" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="message">رسالتك *</Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        className="min-h-[120px]"
-                        required
-                      />
-                    </div>
-                    <Button
-                      type="submit"
-                      className="w-full bg-algeria-green-500 hover:bg-algeria-green-600 text-white"
-                      disabled={sending}
-                    >
-                      {sending ? "جاري الإرسال..." : "إرسال الرسالة"}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal direction="down">
+              <h1 className="text-3xl font-bold text-center mb-8 text-primary drop-shadow-md">
+                اتصل بنا
+              </h1>
             </ScrollReveal>
 
-            {/* ✅ قسم معلومات التواصل */}
-            <div className="space-y-6">
-              <ScrollReveal direction="up" delay={0.1}>
-                <Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <ScrollReveal direction="left">
+                <Card className="bg-white/80 dark:bg-black/40 backdrop-blur-md border border-border shadow-lg">
                   <CardHeader>
-                    <CardTitle>📱 واتساب</CardTitle>
+                    <CardTitle>أرسل لنا رسالة</CardTitle>
+                    <CardDescription>
+                      نحن نقدر آراءكم واقتراحاتكم لتحسين المنصة
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      للتواصل السريع والدعم الفوري
-                    </p>
-                    <a
-                      href="https://wa.me/213563263186?text=مرحبا"
-                      target="_blank"
-                      className="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition"
-                    >
-                      تواصل عبر واتساب
-                    </a>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">الاسم الكامل *</Label>
+                        <Input id="name" name="name" required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">البريد الإلكتروني *</Label>
+                        <Input id="email" name="email" type="email" required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="message">رسالتك *</Label>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          className="min-h-[120px]"
+                          required
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        className="w-full bg-algeria-green-500 hover:bg-algeria-green-600 text-white"
+                        disabled={sending}
+                      >
+                        {sending ? "جاري الإرسال..." : "إرسال الرسالة"}
+                      </Button>
+                    </form>
                   </CardContent>
                 </Card>
               </ScrollReveal>
 
-              <ScrollReveal direction="up" delay={0.3}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>📧 البريد الإلكتروني</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      لأي استفسار أو دعم تقني
-                    </p>
-                    <a
-                      href="mailto:l9itha.dz@gmail.com"
-                      className="text-algeria-green-600 hover:underline"
-                    >
-                      l9itha.dz@gmail.com
-                    </a>
-                  </CardContent>
-                </Card>
-              </ScrollReveal>
+                            {/* ✅ قسم معلومات التواصل */}
+              <div className="space-y-6">
+                <ScrollReveal direction="up" delay={0.1}>
+                  <Card className="bg-white/80 dark:bg-black/40 backdrop-blur-md border border-border shadow-md">
+                    <CardHeader>
+                      <CardTitle>📱 واتساب</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4">
+                        للتواصل السريع والدعم الفوري
+                      </p>
+                      <a
+                        href="https://wa.me/213563263186?text=مرحبا"
+                        target="_blank"
+                        className="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition"
+                      >
+                        تواصل عبر واتساب
+                      </a>
+                    </CardContent>
+                  </Card>
+                </ScrollReveal>
 
-              <ScrollReveal direction="up" delay={0.5}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>🌐 وسائل التواصل</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      تابعنا للبقاء على اطلاع
-                    </p>
-                    <div className="flex gap-3">
-                      {/* social icons placeholder */}
-                    </div>
-                  </CardContent>
-                </Card>
-              </ScrollReveal>
+                <ScrollReveal direction="up" delay={0.3}>
+                  <Card className="bg-white/80 dark:bg-black/40 backdrop-blur-md border border-border shadow-md">
+                    <CardHeader>
+                      <CardTitle>📧 البريد الإلكتروني</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4">
+                        لأي استفسار أو دعم تقني
+                      </p>
+                      <a
+                        href="mailto:l9itha.dz@gmail.com"
+                        className="text-algeria-green-600 hover:underline"
+                      >
+                        l9itha.dz@gmail.com
+                      </a>
+                    </CardContent>
+                  </Card>
+                </ScrollReveal>
 
-              <ScrollReveal direction="up" delay={0.7}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>❓ الأسئلة الشائعة</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">
-                      قد تجد إجابة سؤالك هنا
-                    </p>
-                    <AnimatedLinkButton to="/about" variant="outline">
-                      تعرف على المنصة
-                    </AnimatedLinkButton>
-                  </CardContent>
-                </Card>
-              </ScrollReveal>
+                <ScrollReveal direction="up" delay={0.5}>
+                  <Card className="bg-white/80 dark:bg-black/40 backdrop-blur-md border border-border shadow-md">
+                    <CardHeader>
+                      <CardTitle>🌐 وسائل التواصل</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4">
+                        تابعنا للبقاء على اطلاع
+                      </p>
+                      <div className="flex gap-3">
+                        {/* social icons placeholder */}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </ScrollReveal>
+
+                <ScrollReveal direction="up" delay={0.7}>
+                  <Card className="bg-white/80 dark:bg-black/40 backdrop-blur-md border border-border shadow-md">
+                    <CardHeader>
+                      <CardTitle>❓ الأسئلة الشائعة</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4">
+                        قد تجد إجابة سؤالك هنا
+                      </p>
+                      <AnimatedLinkButton to="/about" variant="outline">
+                        تعرف على المنصة
+                      </AnimatedLinkButton>
+                    </CardContent>
+                  </Card>
+                </ScrollReveal>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
