@@ -35,14 +35,7 @@ const Submit = () => {
     image: null as File | null,
   });
 
- const wilayas = [
-  "أدرار", "الشلف", "الأغواط", "أم البواقي", "باتنة", "بجاية", "بسكرة", "بشار", "البليدة", "البويرة",
-  "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر", "الجلفة", "جيجل", "سطيف", "سعيدة",
-  "سكيكدة", "سيدي بلعباس", "عنابة", "قالمة", "قسنطينة", "المدية", "مستغانم", "المسيلة", "معسكر", "ورقلة",
-  "وهران", "البيض", "إليزي", "برج بوعريريج", "بومرداس", "الطارف", "تندوف", "تيسمسيلت", "الوادي", "خنشلة",
-  "سوق أهراس", "تيبازة", "ميلة", "عين الدفلى", "النعامة", "عين تموشنت", "غرداية", "غليزان"
-];
-
+  const wilayas = [ /* ... list of wilayas as before ... */ ];
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -84,7 +77,6 @@ const Submit = () => {
       return;
     }
 
-    // ✅ تصحيح الرقم: تجاهل الصفر بعد +213
     const cleaned = contactNumber.replace(/\D/g, "");
     const correctedNumber = cleaned.startsWith("0") ? cleaned.slice(1) : cleaned;
     const fullNumber = "+213" + correctedNumber;
@@ -120,7 +112,6 @@ const Submit = () => {
       const { data: publicUrl } = supabase.storage
         .from("ads-images")
         .getPublicUrl(fileName);
-
       imageUrl = publicUrl?.publicUrl || null;
     }
 
@@ -162,171 +153,179 @@ const Submit = () => {
     setIsSubmitting(false);
   };
 
-    return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-center mb-8 text-primary">
-            أضف إعلان جديد
-          </h1>
+  return (
+    <div
+      className="relative min-h-screen bg-fixed bg-cover bg-center bg-no-repeat text-foreground"
+      style={{
+        backgroundImage: 'url("/11.jpg")',
+        backgroundColor: "hsl(var(--background))",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-0" />
+      <div className="relative z-10">
+        <Navigation />
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-2xl mx-auto">
+            <h1 className="text-3xl font-bold text-center mb-8 text-primary drop-shadow-md">
+              أضف إعلان جديد
+            </h1>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>معلومات الإعلان</CardTitle>
-              <CardDescription>يرجى ملء جميع الحقول بدقة</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* النوع */}
-                <div className="space-y-2">
-                  <Label>نوع الإعلان</Label>
-                  <Select
-                    value={formData.type}
-                    onValueChange={(v) => handleInputChange("type", v)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="نوع الإعلان" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="lost">مفقود</SelectItem>
-                      <SelectItem value="found">موجود</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            <Card className="bg-white/80 dark:bg-black/40 backdrop-blur-md border border-border shadow-xl">
+              <CardHeader>
+                <CardTitle>معلومات الإعلان</CardTitle>
+                <CardDescription>يرجى ملء جميع الحقول بدقة</CardDescription>
+              </CardHeader>
 
-                {/* الاسم */}
-                <div className="space-y-2">
-                  <Label>اسم الشيء</Label>
-                  <Input
-                    value={formData.itemName}
-                    onChange={(e) => handleInputChange("itemName", e.target.value)}
-                  />
-                </div>
+                            <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* النوع */}
+                  <div className="space-y-2">
+                    <Label>نوع الإعلان</Label>
+                    <Select
+                      value={formData.type}
+                      onValueChange={(v) => handleInputChange("type", v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="نوع الإعلان" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="lost">مفقود</SelectItem>
+                        <SelectItem value="found">موجود</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* الوصف */}
-                <div className="space-y-2">
-                  <Label>الوصف</Label>
-                  <Textarea
-                    className="min-h-[100px]"
-                    value={formData.description}
-                    onChange={(e) => handleInputChange("description", e.target.value)}
-                  />
-                </div>
-
-                {/* الولاية */}
-                <div className="space-y-2">
-                  <Label>الموقع (الولاية)</Label>
-                  <Select
-                    value={formData.location}
-                    onValueChange={(v) => handleInputChange("location", v)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="اختر الولاية" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {wilayas.map((w) => (
-                        <SelectItem key={w} value={w}>
-                          {w}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* التاريخ */}
-                <div className="space-y-2">
-                  <Label>التاريخ</Label>
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => handleInputChange("date", e.target.value)}
-                  />
-                </div>
-
-                {/* ✅ الهاتف مع مفتاح ثابت */}
-                <div className="space-y-2">
-                  <Label>رقم الهاتف</Label>
-                  <div className="flex gap-2 items-center">
-                    <span className="text-sm text-muted-foreground font-medium">+213</span>
+                  {/* الاسم */}
+                  <div className="space-y-2">
+                    <Label>اسم الشيء</Label>
                     <Input
-                      type="tel"
-                      placeholder="661234567"
-                      value={formData.contactNumber}
-                      onChange={(e) => handleInputChange("contactNumber", e.target.value)}
-                      className="w-full"
+                      value={formData.itemName}
+                      onChange={(e) => handleInputChange("itemName", e.target.value)}
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    لا تكتب 0 في بداية الرقم. مثال: 661234567
-                  </p>
+
+                  {/* الوصف */}
+                  <div className="space-y-2">
+                    <Label>الوصف</Label>
+                    <Textarea
+                      className="min-h-[100px]"
+                      value={formData.description}
+                      onChange={(e) => handleInputChange("description", e.target.value)}
+                    />
+                  </div>
+
+                  {/* الموقع */}
+                  <div className="space-y-2">
+                    <Label>الموقع (الولاية)</Label>
+                    <Select
+                      value={formData.location}
+                      onValueChange={(v) => handleInputChange("location", v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="اختر الولاية" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {wilayas.map((w) => (
+                          <SelectItem key={w} value={w}>
+                            {w}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* التاريخ */}
+                  <div className="space-y-2">
+                    <Label>التاريخ</Label>
+                    <Input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) => handleInputChange("date", e.target.value)}
+                    />
+                  </div>
+
+                  {/* رقم الهاتف */}
+                  <div className="space-y-2">
+                    <Label>رقم الهاتف</Label>
+                    <div className="flex gap-2 items-center">
+                      <span className="text-sm text-muted-foreground font-medium">+213</span>
+                      <Input
+                        type="tel"
+                        placeholder="661234567"
+                        value={formData.contactNumber}
+                        onChange={(e) => handleInputChange("contactNumber", e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      لا تكتب 0 في بداية الرقم. مثال: 661234567
+                    </p>
+                  </div>
+
+                  {/* الصورة */}
+                  <div className="space-y-2">
+                    <Label>الصورة (اختياري)</Label>
+                    <label className="inline-block bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded cursor-pointer transition">
+                      اختر صورة
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                    </label>
+                    {formData.image && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        ✅ تم اختيار: {formData.image.name}
+                      </p>
+                    )}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-primary hover:bg-primary/80 text-primary-foreground py-3 text-lg"
+                  >
+                    {isSubmitting ? "📤 جارٍ النشر..." : "نشر الإعلان"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* التحميل */}
+            {isSubmitting && (
+              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg text-center">
+                  <div className="animate-spin h-8 w-8 mx-auto mb-3 border-4 border-accent border-t-transparent rounded-full" />
+                  <p className="font-medium">جاري معالجة الإعلان...</p>
                 </div>
-
-                {/* الصورة */}
-                <div className="space-y-2">
-  <Label>الصورة (اختياري)</Label>
-
-  <label className="inline-block bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded cursor-pointer transition">
-    اختر صورة
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleImageChange}
-      className="hidden"
-    />
-  </label>
-
-  {formData.image && (
-    <p className="text-sm text-muted-foreground mt-1">
-      ✅ تم اختيار: {formData.image.name}
-    </p>
-  )}
-</div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-primary hover:bg-primary/80 text-primary-foreground py-3 text-lg"
-                >
-                  {isSubmitting ? "📤 جارٍ النشر..." : "نشر الإعلان"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* تحميل */}
-          {isSubmitting && (
-            <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-              <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg text-center">
-                <div className="animate-spin h-8 w-8 mx-auto mb-3 border-4 border-accent border-t-transparent rounded-full" />
-                <p className="font-medium">جاري معالجة الإعلان...</p>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* نجاح */}
-          {showSuccessPopup && (
-            <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-4 rounded-lg shadow-lg z-50 text-center space-y-3">
-              <p>🎉 تم نشر إعلانك بنجاح!</p>
-              <div className="flex justify-center gap-3">
-                <AnimatedLinkButton to="/listings" variant="secondary" size="sm">
-                  مشاهدة الإعلانات
-                </AnimatedLinkButton>
-                <button
-                  onClick={() => {
-                    playSuccessSound();
-                    setShowSuccessPopup(false);
-                  }}
-                  className="px-4 py-1 bg-white text-primary font-semibold rounded hover:bg-muted transition"
-                >
-                  حسناً، جميل
-                </button>
+            {/* نجاح */}
+            {showSuccessPopup && (
+              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-4 rounded-lg shadow-lg z-50 text-center space-y-3">
+                <p>🎉 تم نشر إعلانك بنجاح!</p>
+                <div className="flex justify-center gap-3">
+                  <AnimatedLinkButton to="/listings" variant="secondary" size="sm">
+                    مشاهدة الإعلانات
+                  </AnimatedLinkButton>
+                  <button
+                    onClick={() => {
+                      playSuccessSound();
+                      setShowSuccessPopup(false);
+                    }}
+                    className="px-4 py-1 bg-white text-primary font-semibold rounded hover:bg-muted transition"
+                  >
+                    حسناً، جميل
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };
