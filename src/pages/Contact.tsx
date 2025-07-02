@@ -56,7 +56,7 @@ const Contact = () => {
     <div
       className="relative min-h-screen bg-fixed bg-cover bg-center bg-no-repeat text-foreground"
       style={{
-        backgroundImage: 'url("/7.jpg")',
+        backgroundImage: 'url("/99.jpg")',
         backgroundColor: 'hsl(var(--background))',
       }}
     >
