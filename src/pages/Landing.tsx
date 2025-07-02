@@ -6,7 +6,7 @@ const Landing = () => {
     <div
       className="relative min-h-screen w-full bg-fixed bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center text-center px-4"
       style={{
-        backgroundImage: 'url("/00.png")', // تأكد أن الصورة داخل مجلد public
+        backgroundImage: 'url("/55.png")', // تأكد أن الصورة داخل مجلد public
       }}
     >
       {/* طبقة شفافية علوية لتعديل التباين */}
