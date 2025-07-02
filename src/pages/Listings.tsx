@@ -46,6 +46,24 @@ const Listings = () => {
     fetchAds();
   }, []);
 
+  const extractPhoneNumber = (raw) =>
+    String(raw || "").replace(/\D+/g, ""); // يحذف كل شيء غير رقمي
+
+  const handleWhatsAppContact = (phoneNumber, itemTitle, type) => {
+    const clean = extractPhoneNumber(phoneNumber);
+    if (!clean) return;
+
+    const msg = `مرحبًا، رأيت إعلان "${itemTitle}" (${type === "lost" ? "مفقود" : "موجود"}) على منصة L9itha DZ وأرغب بالتواصل.`;
+    const url = `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+  };
+
+  const handlePhoneCall = (phoneNumber) => {
+    const clean = extractPhoneNumber(phoneNumber);
+    if (!clean) return;
+    window.open(`tel:${clean}`);
+  };
+
   const filteredListings = allListings.filter((listing) => {
     const isVisible = listing.status === "published";
     const matchesSearch =
@@ -60,17 +78,6 @@ const Listings = () => {
   });
 
   const slicedListings = filteredListings.slice(0, visiblePage * adsPerPage);
-
-  const handleWhatsAppContact = (phoneNumber, itemTitle, type) => {
-    const message = `مرحبًا، رأيت إعلان "${itemTitle}" (${type === "lost" ? "مفقود" : "موجود"}) على منصة L9itha DZ وأرغب بالتواصل.`;
-    const url = `https://wa.me/${phoneNumber?.replace(/\s+/g, "").replace("+", "")}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
-  };
-
-  const handlePhoneCall = (phoneNumber) => {
-    const clean = phoneNumber?.replace(/\s+/g, "").replace("+", "");
-    window.open(`tel:${clean}`);
-  };
 
     return (
     <div className="min-h-screen bg-background text-foreground">
@@ -129,7 +136,10 @@ const Listings = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {slicedListings.map((listing) => (
-                <Card key={listing.id} className="hover:shadow-md transition border bg-card text-card-foreground">
+                <Card
+                  key={listing.id}
+                  className="hover:shadow-md transition border bg-card text-card-foreground"
+                >
                   <CardHeader className="p-0">
                     {listing.image_url ? (
                       <img
@@ -146,11 +156,13 @@ const Listings = () => {
 
                                     <CardContent className="p-4 space-y-3">
                     <div className="flex items-center gap-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        listing.ad_type === "lost"
-                          ? "bg-destructive/20 text-destructive"
-                          : "bg-primary/10 text-primary"
-                      }`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          listing.ad_type === "lost"
+                            ? "bg-destructive/20 text-destructive"
+                            : "bg-primary/10 text-primary"
+                        }`}
+                      >
                         {listing.ad_type === "lost" ? "مفقود" : "موجود"}
                       </span>
 
@@ -169,12 +181,12 @@ const Listings = () => {
                       {listing.date && <p>📅 {listing.date}</p>}
                     </div>
 
-                    {/* ✅ زر واتساب وزر اتصال مباشر */}
+                    {/* ✅ زر واتساب واتصال مباشر مع تنظيف الرقم */}
                     <div className="grid grid-cols-2 gap-2 pt-2">
                       <Button
                         onClick={() =>
                           handleWhatsAppContact(
-                            listing.contact_numberer || listing.contactNumber || "",
+                            listing.contact_numberer,
                             listing.title,
                             listing.ad_type
                           )
@@ -185,11 +197,7 @@ const Listings = () => {
                         واتساب
                       </Button>
                       <Button
-                        onClick={() =>
-                          handlePhoneCall(
-                            listing.contact_numberer || listing.contactNumber || ""
-                          )
-                        }
+                        onClick={() => handlePhoneCall(listing.contact_numberer)}
                         className="bg-blue-600 hover:bg-blue-700 text-white"
                         size="sm"
                       >
@@ -201,7 +209,6 @@ const Listings = () => {
               ))}
             </div>
 
-            {/* 📭 لا توجد نتائج */}
             {filteredListings.length === 0 && (
               <div className="text-center py-12">
                 <h3 className="text-xl font-semibold text-muted-foreground mb-4">
@@ -216,7 +223,6 @@ const Listings = () => {
               </div>
             )}
 
-            {/* ✅ أزرار التالي والسابق */}
             {filteredListings.length > adsPerPage && (
               <div className="flex justify-center items-center gap-4 mt-10">
                 {visiblePage > 1 && (
