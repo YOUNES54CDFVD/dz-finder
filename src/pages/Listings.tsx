@@ -77,7 +77,7 @@ const Listings = () => {
     <div
       className="relative min-h-screen bg-fixed bg-cover bg-center bg-no-repeat text-foreground"
       style={{
-        backgroundImage: 'url("/09.jpg")',
+        backgroundImage: 'url("/10.jpg")',
         backgroundColor: "hsl(var(--background))",
       }}
     >
