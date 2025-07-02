@@ -116,7 +116,13 @@ const Testimonials = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-bg">
+    <div
+      className="relative min-h-screen bg-fixed bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: 'url("/09.jpg")',
+        backgroundColor: "hsl(var(--background))",
+      }}
+    >
       <Navigation />
 
       <div className="container mx-auto px-4 py-8">
