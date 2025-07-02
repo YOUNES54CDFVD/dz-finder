@@ -70,7 +70,13 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+      <div
+  className="min-h-screen bg-cover bg-center bg-no-repeat"
+  style={{
+    backgroundImage: 'url("/09.jpg")',
+    backgroundColor: 'hsl(var(--background))',
+  }} 
+        
       <Navigation />
 
       {/* Hero Section */}
