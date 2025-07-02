@@ -6,12 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const About = () => {
   return (
     <div
-  className="min-h-screen bg-cover bg-center bg-no-repeat"
-  style={{
-    backgroundImage: 'url("/0.png")',
-    backgroundColor: 'hsl(var(--background))',
-  }}
->
+      className="relative min-h-screen bg-fixed bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: 'url("/48.jpg")',
+        backgroundColor: "hsl(var(--background))",
+      }}
+    >
 
       <Navigation />
       
