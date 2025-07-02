@@ -67,7 +67,7 @@ const Index = () => {
         backgroundColor: "hsl(var(--background))",
       }}
     >
-      {/* تدرج علوي لتوضيح النص */}
+      {/* تدرج علوي لتعزيز التباين */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-0" />
       <div className="relative z-10">
         <Navigation />
@@ -92,9 +92,9 @@ const Index = () => {
               </Button>
               <Button
                 asChild
-                variant="outline"
+                variant="secondary"
                 size="lg"
-                className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg hover:scale-[1.03] transition"
+                className="bg-white/80 text-primary hover:bg-white hover:scale-[1.03] transition px-8 py-4 text-lg"
               >
                 <Link to="/submit?type=found">وجدت شيئاً</Link>
               </Button>
@@ -103,14 +103,17 @@ const Index = () => {
         </section>
 
         {/* Recent Listings */}
-        <section className="py-16 px-4 backdrop-blur-sm bg-white/80 dark:bg-black/40 transition">
+        <section className="py-16 px-4 bg-transparent">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-primary">
               آخر الإعلانات
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recentListings.map((listing) => (
-                <Card key={listing.id} className="hover:shadow-xl transition duration-300">
+                <Card
+                  key={listing.id}
+                  className="hover:shadow-xl transition duration-300 bg-white/80 backdrop-blur-md"
+                >
                   <CardHeader className="p-0">
                     {listing.image_url ? (
                       <img
@@ -160,14 +163,17 @@ const Index = () => {
         </section>
 
                 {/* Testimonials */}
-        <section className="py-16 px-4 bg-white/80 dark:bg-black/40 backdrop-blur-sm transition">
+        <section className="py-16 px-4 bg-transparent">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-primary">
               ماذا يقول مستخدمونا
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testimonials.map((testimonial) => (
-                <Card key={testimonial.id} className="text-center shadow-md">
+                <Card
+                  key={testimonial.id}
+                  className="text-center bg-white/80 dark:bg-black/30 backdrop-blur-md shadow-md"
+                >
                   <CardContent className="p-6 flex flex-col items-center">
                     <div className="flex justify-center mb-3">
                       {[...Array(testimonial.rating)].map((_, i) => (
@@ -209,8 +215,8 @@ const Index = () => {
         </section>
 
         <Footer />
-      </div> {/* end of z-10 layer */}
-    </div> // end of background container
+      </div> {/* نهاية z-10 */}
+    </div> // نهاية الغلاف الخلفي
   );
 };
 
